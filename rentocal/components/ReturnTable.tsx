@@ -1,7 +1,7 @@
 import { Table } from 'antd';
 import Column from 'antd/lib/table/Column';
 import React from 'react';
-import { useRecoilState } from 'recoil';
+import { useRecoilValue } from 'recoil';
 import { 
     downPercentageState, 
     purchasePriceState, 
@@ -13,13 +13,13 @@ import {
 } from 'recoilAtoms';
 
 function ReturnTable() {
-    const [purchasePrice, setPurchasePrice] = useRecoilState(purchasePriceState);
-    const [downPercentage, setDownPercentage] = useRecoilState(downPercentageState);
-    const [interestRate, setInterestRate] = useRecoilState(interestRateState);
-    const [closingCost, setClosingCost] = useRecoilState(closingCostState);
-    const [immediateCost, setImmediateCost] = useRecoilState(immediateCostState);
-    const [vacancyRate, setVacancyRate] = useRecoilState(vacancyRateState);
-    const [managementRate, setManagementRate] = useRecoilState(managementRateState);
+    const purchasePrice = useRecoilValue(purchasePriceState);
+    const downPercentage = useRecoilValue(downPercentageState);
+    const interestRate = useRecoilValue(interestRateState);
+    const closingCost = useRecoilValue(closingCostState);
+    const immediateCost = useRecoilValue(immediateCostState);
+    const vacancyRate = useRecoilValue(vacancyRateState);
+    const managementRate = useRecoilValue(managementRateState);
 
     const data = [
         {

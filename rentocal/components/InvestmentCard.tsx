@@ -65,7 +65,7 @@ function InvestmentCard(props: Props) {
                 min={1}
                 step = {0.5}
             />
-            <div style={{paddingTop: 20}}>Immediate Cost: {immediateCost}</div>
+            <div style={{paddingTop: 20}}>Immediate Cost: ${immediateCost}</div>
             <Slider 
                 value={immediateCost} 
                 onChange={(value: number) => {

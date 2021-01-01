@@ -34,3 +34,8 @@ export const managementRateState = atom({
     key: 'managementRateState',
     default: 6,
 });
+
+export const monthlyRentState = atom({
+    key: 'monthlyRentState',
+    default: 1000,
+});
