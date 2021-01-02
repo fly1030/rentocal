@@ -64,3 +64,23 @@ export const capitalExpRateState = atom({
     key: 'capitalExpRateState',
     default: 5,
 });
+
+export const propertyAddressState = atom({
+    key: 'propertyAddressState',
+    default: '',
+});
+
+export const bedroomCountState = atom({
+    key: 'bedroomCountState',
+    default: 3,
+});
+
+export const bathroomCountState = atom({
+    key: 'bathroomCountState',
+    default: 3,
+});
+
+export const yearBuiltState = atom({
+    key: 'yearBuiltState',
+    default: 2021,
+});

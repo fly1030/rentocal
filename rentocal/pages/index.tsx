@@ -30,6 +30,7 @@ export const getServerSideProps: GetServerSideProps = async (_context) => {
           monthly_tax
           monthly_insurance
           capital_exp_rate
+          year_built
         }
       }
     `

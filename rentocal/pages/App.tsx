@@ -19,6 +19,10 @@ import {
   monthlyInsuranceState,
   monthlyTaxState,
   capitalExpRateState,
+  propertyAddressState,
+  bathroomCountState,
+  bedroomCountState,
+  yearBuiltState,
 } from "recoilAtoms";
 
 type Props = {
@@ -40,6 +44,10 @@ const App = (props: Props) => {
   const setMonthlyInsurance = useSetRecoilState(monthlyInsuranceState);
   const setHoaFee = useSetRecoilState(hoaFeeState);
   const setCapitalExpRate = useSetRecoilState(capitalExpRateState);
+  const setPropertyAddress = useSetRecoilState(propertyAddressState);
+  const setBedroomCount = useSetRecoilState(bedroomCountState);
+  const setBathroomCount = useSetRecoilState(bathroomCountState);
+  const setYearBuilt = useSetRecoilState(yearBuiltState);
 
   const {propertyEntries} = props;
   let tempProperty = null;
@@ -61,6 +69,7 @@ const App = (props: Props) => {
     }
     const targetProperty = selectedPropertyInfo[0];
     const {
+      id,
       bathroom_count,
       bedroom_count,
       price,
@@ -76,6 +85,7 @@ const App = (props: Props) => {
       monthly_tax,
       monthly_insurance,
       capital_exp_rate,
+      year_built,
     } = targetProperty;
     setPurchasePrice(price);
     setDownPercentage(down_percentage);
@@ -90,10 +100,14 @@ const App = (props: Props) => {
     setMonthlyInsurance(monthly_insurance);
     setHoaFee(hoa_fee);
     setCapitalExpRate(capital_exp_rate);
+    setPropertyAddress(id);
+    setBedroomCount(bedroom_count);
+    setBathroomCount(bathroom_count);
+    setYearBuilt(year_built);
   }, [selectedProperty]);
 
   return (
-    <Layout style={{height: 1300}}>
+    <Layout style={{height: 1600}}>
         <HomepageHeader />
         <Layout>
             <Sider width={300} className="site-layout-background">

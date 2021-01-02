@@ -8,6 +8,7 @@
     "start": "next start"
   },
   "dependencies": {
+    "@ant-design/icons": "^4.3.0",
     "@apollo/client": "^3.3.6",
     "antd": "^4.9.4",
     "apollo-server": "^2.19.1",

@@ -3,6 +3,7 @@ import React from 'react';
 import { useRecoilValue } from 'recoil';
 import { purchasePriceState, downPercentageState, interestRateState, closingCostState, immediateCostState, vacancyRateState, managementRateState, monthlyReserveState, monthlyTaxState, monthlyInsuranceState, hoaFeeState, capitalExpRateState, monthlyRentState } from 'recoilAtoms';
 import InvestmentCard from './InvestmentCard';
+import PropertyInfoCard from './PropertyInfoCard';
 import ResultInfoCard from './ResultInfoCard';
 import ReturnCard from './ReturnCard';
 import { getCapRate, getCashOnCash, getGrossYield } from './Utils/Utils';
@@ -57,6 +58,12 @@ function PropertySection() {
     
 	return (
 		<div style={{padding: 20}}>
+            <Row>
+                <Col span={12}>
+                    <PropertyInfoCard />
+                </Col>
+            </Row>
+            <Divider />
             <Row>
                 <Col span={8}>
                     <ResultInfoCard 
