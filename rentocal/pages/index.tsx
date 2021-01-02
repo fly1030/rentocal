@@ -26,6 +26,10 @@ export const getServerSideProps: GetServerSideProps = async (_context) => {
           reserve_rate
           closing_cost
           interest_rate
+          hoa_fee
+          monthly_tax
+          monthly_insurance
+          capital_exp_rate
         }
       }
     `

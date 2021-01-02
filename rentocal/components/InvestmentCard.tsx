@@ -10,6 +10,10 @@ import {
     managementRateState,
     vacancyRateState,
     monthlyReserveState,
+    monthlyTaxState,
+    hoaFeeState,
+    monthlyInsuranceState,
+    capitalExpRateState,
 } from 'recoilAtoms';
 
 type Props = {};
@@ -23,7 +27,10 @@ function InvestmentCard(props: Props) {
     const [vacancyRate, setVacancyRate] = useRecoilState(vacancyRateState);
     const [managementRate, setManagementRate] = useRecoilState(managementRateState);
     const [monthlyReserve, setMonthlyReserve] = useRecoilState(monthlyReserveState);
-
+    const [monthlyTax, setMonthlyTax] = useRecoilState(monthlyTaxState);
+    const [monthlyInsruance, setMonthlyInsurance] = useRecoilState(monthlyInsuranceState);
+    const [hoaFee, setHoaFee] = useRecoilState(hoaFeeState);
+    const [capitalExpRate, setCapitalExpRate] = useRecoilState(capitalExpRateState);
 
 	return (
         <div>
@@ -102,6 +109,46 @@ function InvestmentCard(props: Props) {
                 value={monthlyReserve} 
                 onChange={(value: number) => {
                     setMonthlyReserve(value);
+                }}
+                max={10}
+                min={0}
+                step = {1}
+            />
+            <div style={{paddingTop: 20}}>Monthly Tax: ${monthlyTax}</div>
+            <Slider 
+                value={monthlyTax} 
+                onChange={(value: number) => {
+                    setMonthlyTax(value);
+                }}
+                max={50000}
+                min={0}
+                step = {1}
+            />
+            <div style={{paddingTop: 20}}>Monthly Insurance: ${monthlyInsruance}</div>
+            <Slider 
+                value={monthlyInsruance} 
+                onChange={(value: number) => {
+                    setMonthlyInsurance(value);
+                }}
+                max={5000}
+                min={0}
+                step = {1}
+            />
+            <div style={{paddingTop: 20}}>HOA Fee: ${hoaFee}</div>
+            <Slider 
+                value={hoaFee} 
+                onChange={(value: number) => {
+                    setHoaFee(value);
+                }}
+                max={1000}
+                min={0}
+                step = {1}
+            />
+            <div style={{paddingTop: 20}}>Capital Expenditures: {capitalExpRate}%</div>
+            <Slider 
+                value={capitalExpRate} 
+                onChange={(value: number) => {
+                    setCapitalExpRate(value);
                 }}
                 max={10}
                 min={0}

@@ -44,3 +44,23 @@ export const monthlyReserveState = atom({
     key: 'monthlyReserveState',
     default: 5,
 });
+
+export const monthlyTaxState = atom({
+    key: 'monthlyTaxState',
+    default: 0,
+});
+
+export const monthlyInsuranceState = atom({
+    key: 'monthlyInsuranceState',
+    default: 0,
+});
+
+export const hoaFeeState = atom({
+    key: 'hoaFeeState',
+    default: 0,
+});
+
+export const capitalExpRateState = atom({
+    key: 'capitalExpRateState',
+    default: 5,
+});

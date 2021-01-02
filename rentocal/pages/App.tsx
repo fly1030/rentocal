@@ -15,6 +15,10 @@ import {
   managementRateState, 
   monthlyReserveState,
   monthlyRentState,
+  hoaFeeState,
+  monthlyInsuranceState,
+  monthlyTaxState,
+  capitalExpRateState,
 } from "recoilAtoms";
 
 type Props = {
@@ -32,6 +36,10 @@ const App = (props: Props) => {
   const setManagementRate = useSetRecoilState(managementRateState);
   const setMonthlyReserve = useSetRecoilState(monthlyReserveState);
   const setMonthlyRent = useSetRecoilState(monthlyRentState);
+  const setMonthlyTax = useSetRecoilState(monthlyTaxState);
+  const setMonthlyInsurance = useSetRecoilState(monthlyInsuranceState);
+  const setHoaFee = useSetRecoilState(hoaFeeState);
+  const setCapitalExpRate = useSetRecoilState(capitalExpRateState);
 
   const {propertyEntries} = props;
   let tempProperty = null;
@@ -64,6 +72,10 @@ const App = (props: Props) => {
       reserve_rate,
       closing_cost,
       interest_rate,
+      hoa_fee,
+      monthly_tax,
+      monthly_insurance,
+      capital_exp_rate,
     } = targetProperty;
     setPurchasePrice(price);
     setDownPercentage(down_percentage);
@@ -74,10 +86,14 @@ const App = (props: Props) => {
     setManagementRate(management_rate);
     setMonthlyReserve(reserve_rate);
     setMonthlyRent(monthly_rent);
+    setMonthlyTax(monthly_tax);
+    setMonthlyInsurance(monthly_insurance);
+    setHoaFee(hoa_fee);
+    setCapitalExpRate(capital_exp_rate);
   }, [selectedProperty]);
 
   return (
-    <Layout style={{height: 1000}}>
+    <Layout style={{height: 1240}}>
         <HomepageHeader />
         <Layout>
             <Sider width={300} className="site-layout-background">
