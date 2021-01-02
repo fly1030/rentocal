@@ -93,7 +93,7 @@ const App = (props: Props) => {
   }, [selectedProperty]);
 
   return (
-    <Layout style={{height: 1240}}>
+    <Layout style={{height: 1300}}>
         <HomepageHeader />
         <Layout>
             <Sider width={300} className="site-layout-background">

@@ -4,10 +4,11 @@ export function getMontlyMortgage(
 ): number {
     const P = principle;
     const r = interestRate / 12.0;
-    const n = 360; // number of payments, 30 years paid montly is 360
+    // number of payments, 30 years paid montly is 360
+    const n = 360;
     // M = P [ i(1 + i)^n ] / [ (1 + i)^n – 1]
     const monthly = P * (r * Math.pow((1 + r), n) / (Math.pow((1 + r), n) - 1));
-    return monthly;
+    return Math.floor(monthly);
 }
 
 export function getMontlyNetOperationExpense(
@@ -27,11 +28,69 @@ export function getMonthlyNetOperationIncome(
     rent: number,
     monthlyMortgage: number,
 ): number {
-    return rent - monthlyOperationExp - monthlyMortgage;
+    return Math.floor(rent - monthlyOperationExp - monthlyMortgage);
+}
+
+export function getMonthlyNOI(
+    purchasePrice: number,
+    downPercentage: number,
+    interestRate: number,
+    vacancyFactor: number,
+    monthlyTax: number,
+    hoaFee: number,
+    managementCost: number,
+    monthlyInsurance: number,
+    monthlyRepair: number,
+    monthlyCapitalExp: number,
+    monthlyRent: number,
+): number {
+    const principle = purchasePrice * (1 - downPercentage / 100);
+    const monthlyMortgage = getMontlyMortgage(principle, interestRate / 100);
+    const monthlyNOE = getMontlyNetOperationExpense(
+        (vacancyFactor / 100) * monthlyRent,
+        monthlyTax,
+        hoaFee,
+        (managementCost / 100) * monthlyRent,
+        monthlyInsurance,
+        (monthlyRepair / 100) * monthlyRent,
+        (monthlyCapitalExp / 100) * monthlyRent,
+    );
+    const monthlyNOI = getMonthlyNetOperationIncome(
+        monthlyNOE, 
+        monthlyRent, 
+        monthlyMortgage,
+    );
+    return monthlyNOI;
 }
 
 export function getCashOnCash(
-    accountInfo: {[key: string]: any},
-): number {
-    return 0;
+    purchasePrice: number,
+    downPercentage: number,
+    interestRate: number,
+    closingCost: number,
+    immediateCost: number,
+    vacancyFactor: number,
+    monthlyTax: number,
+    hoaFee: number,
+    managementCost: number,
+    monthlyInsurance: number,
+    monthlyRepair: number,
+    monthlyCapitalExp: number,
+    monthlyRent: number,
+): string {
+    const annualNOI = 12 * getMonthlyNOI(
+        purchasePrice,
+        downPercentage,
+        interestRate,
+        vacancyFactor,
+        monthlyTax,
+        hoaFee,
+        managementCost,
+        monthlyInsurance,
+        monthlyRepair,
+        monthlyCapitalExp,
+        monthlyRent,
+    );
+    const initialInvestment = closingCost + immediateCost + purchasePrice * downPercentage / 100;
+    return `${(annualNOI * 100 / initialInvestment).toFixed(1)}%`;
 }

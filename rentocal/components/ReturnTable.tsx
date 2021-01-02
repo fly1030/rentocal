@@ -9,8 +9,15 @@ import {
     closingCostState, 
     immediateCostState,
     managementRateState,
-    vacancyRateState
+    vacancyRateState,
+    capitalExpRateState,
+    hoaFeeState,
+    monthlyInsuranceState,
+    monthlyReserveState,
+    monthlyTaxState,
+    monthlyRentState
 } from 'recoilAtoms';
+import { getMonthlyNetOperationIncome, getMontlyMortgage, getMontlyNetOperationExpense } from './Utils/Utils';
 
 function ReturnTable() {
     const purchasePrice = useRecoilValue(purchasePriceState);
@@ -20,23 +27,74 @@ function ReturnTable() {
     const immediateCost = useRecoilValue(immediateCostState);
     const vacancyRate = useRecoilValue(vacancyRateState);
     const managementRate = useRecoilValue(managementRateState);
+    const monthlyReserve = useRecoilValue(monthlyReserveState);
+    const monthlyTax = useRecoilValue(monthlyTaxState);
+    const monthlyInsurance = useRecoilValue(monthlyInsuranceState);
+    const hoaFee = useRecoilValue(hoaFeeState);
+    const capitalExpRate = useRecoilValue(capitalExpRateState);
+    const monthlyRent = useRecoilValue(monthlyRentState);
+
+    const principle = purchasePrice * (1 - downPercentage / 100);
+    const monthlyMortgage = getMontlyMortgage(principle, interestRate / 100);
+    // calculate year1
+    const year1MonthlyNOE = getMontlyNetOperationExpense(
+        (vacancyRate / 100) * monthlyRent,
+        monthlyTax,
+        hoaFee,
+        (managementRate / 100) * monthlyRent,
+        monthlyInsurance,
+        (monthlyReserve / 100) * monthlyRent,
+        (capitalExpRate / 100) * monthlyRent,
+    );
+    const year1MonthlyROI = getMonthlyNetOperationIncome(
+        year1MonthlyNOE, 
+        monthlyRent, 
+        monthlyMortgage,
+    );
+
+    // calculate year3
+    const year3MonthlyNOE = year1MonthlyNOE * Math.pow((1 + 0.03), 3);
+    const year3MonthlyRent = monthlyRent * Math.pow((1 + 0.03), 3);
+    const year3MonthlyROI = getMonthlyNetOperationIncome(
+        year3MonthlyNOE, 
+        year3MonthlyRent, 
+        monthlyMortgage,
+    );
+
+    // calculate year5
+    const year5MonthlyNOE = year1MonthlyNOE * Math.pow((1 + 0.03), 5);
+    const year5MonthlyRent = monthlyRent * Math.pow((1 + 0.03), 5);
+    const year5MonthlyROI = getMonthlyNetOperationIncome(
+        year5MonthlyNOE, 
+        year5MonthlyRent, 
+        monthlyMortgage,
+    );
+
+    // calculate year10
+    const year10MonthlyNOE = year1MonthlyNOE * Math.pow((1 + 0.03), 10);
+    const year10MonthlyRent = monthlyRent * Math.pow((1 + 0.03), 10);
+    const year10MonthlyROI = getMonthlyNetOperationIncome(
+        year10MonthlyNOE, 
+        year10MonthlyRent, 
+        monthlyMortgage,
+    );
 
     const data = [
         {
           key: '1',
           span: 'Annual',
-          year1: '$2549',
-          year3: '$3099',
-          year5: '$3499',
-          year10: '$4099',
+          year1: `$${year1MonthlyROI * 12}`,
+          year3: `$${year3MonthlyROI * 12}`,
+          year5: `$${year5MonthlyROI * 12}`,
+          year10: `$${year10MonthlyROI * 12}`,
         },
         {
             key: '2',
             span: 'Monthly',
-            year1: '$212',
-            year3: '$251',
-            year5: '$292',
-            year10: '$400',
+            year1: `$${year1MonthlyROI}`,
+            year3: `$${year3MonthlyROI}`,
+            year5: `$${year5MonthlyROI}`,
+            year10: `$${year10MonthlyROI}`,
           },
       ];
 
