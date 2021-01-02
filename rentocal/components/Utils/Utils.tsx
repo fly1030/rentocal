@@ -143,3 +143,11 @@ export function getCapRate(
     );
     return `${(annualNOI * 100 / purchasePrice).toFixed(1)}%`;
 }
+
+export function getGrossYield(
+    purchasePrice: number,
+    monthlyRent: number,
+): string {
+    const grossIncome = 12 * monthlyRent;
+    return `${(grossIncome * 100 / purchasePrice).toFixed(1)}%`;
+}

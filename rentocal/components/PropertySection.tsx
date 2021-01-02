@@ -5,7 +5,7 @@ import { purchasePriceState, downPercentageState, interestRateState, closingCost
 import InvestmentCard from './InvestmentCard';
 import ResultInfoCard from './ResultInfoCard';
 import ReturnCard from './ReturnCard';
-import { getCapRate, getCashOnCash } from './Utils/Utils';
+import { getCapRate, getCashOnCash, getGrossYield } from './Utils/Utils';
 
 function PropertySection() {
     const purchasePrice = useRecoilValue(purchasePriceState);
@@ -49,31 +49,31 @@ function PropertySection() {
         capitalExpRate,
         monthlyRent,
     );
+
+    const grossYield = getGrossYield(
+        purchasePrice,
+        monthlyRent,
+    );
+    
 	return (
 		<div style={{padding: 20}}>
             <Row>
-                <Col span={6}>
+                <Col span={8}>
                     <ResultInfoCard 
                         title="Cash on Cash"
                         result={cashOnCash}
                     />
                 </Col>
-                <Col span={6}>
+                <Col span={8}>
                     <ResultInfoCard 
                         title="Cap Rate"
                         result={capRate}
                     />
                 </Col>
-                <Col span={6}>
+                <Col span={8}>
                     <ResultInfoCard 
                         title="Growth Yield"
-                        result="10%"
-                    />
-                </Col>
-                <Col span={6}>
-                    <ResultInfoCard 
-                        title="Ann. Return"
-                        result="10%"
+                        result={grossYield}
                     />
                 </Col>
             </Row>
