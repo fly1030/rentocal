@@ -17,7 +17,7 @@ import {
     monthlyTaxState,
     monthlyRentState
 } from 'recoilAtoms';
-import { getMonthlyNetOperationIncome, getMontlyMortgage, getMontlyNetOperationExpense } from './Utils/Utils';
+import { getMonthlyCashflow, getMontlyMortgage, getMontlyNetOperationExpense } from './Utils/Utils';
 
 function ReturnTable() {
     const purchasePrice = useRecoilValue(purchasePriceState);
@@ -46,7 +46,7 @@ function ReturnTable() {
         (monthlyReserve / 100) * monthlyRent,
         (capitalExpRate / 100) * monthlyRent,
     );
-    const year1MonthlyROI = getMonthlyNetOperationIncome(
+    const year1MonthlyROI = getMonthlyCashflow(
         year1MonthlyNOE, 
         monthlyRent, 
         monthlyMortgage,
@@ -55,7 +55,7 @@ function ReturnTable() {
     // calculate year3
     const year3MonthlyNOE = year1MonthlyNOE * Math.pow((1 + 0.03), 3);
     const year3MonthlyRent = monthlyRent * Math.pow((1 + 0.03), 3);
-    const year3MonthlyROI = getMonthlyNetOperationIncome(
+    const year3MonthlyROI = getMonthlyCashflow(
         year3MonthlyNOE, 
         year3MonthlyRent, 
         monthlyMortgage,
@@ -64,7 +64,7 @@ function ReturnTable() {
     // calculate year5
     const year5MonthlyNOE = year1MonthlyNOE * Math.pow((1 + 0.03), 5);
     const year5MonthlyRent = monthlyRent * Math.pow((1 + 0.03), 5);
-    const year5MonthlyROI = getMonthlyNetOperationIncome(
+    const year5MonthlyROI = getMonthlyCashflow(
         year5MonthlyNOE, 
         year5MonthlyRent, 
         monthlyMortgage,
@@ -73,7 +73,7 @@ function ReturnTable() {
     // calculate year10
     const year10MonthlyNOE = year1MonthlyNOE * Math.pow((1 + 0.03), 10);
     const year10MonthlyRent = monthlyRent * Math.pow((1 + 0.03), 10);
-    const year10MonthlyROI = getMonthlyNetOperationIncome(
+    const year10MonthlyROI = getMonthlyCashflow(
         year10MonthlyNOE, 
         year10MonthlyRent, 
         monthlyMortgage,

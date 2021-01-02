@@ -5,7 +5,7 @@ import { purchasePriceState, downPercentageState, interestRateState, closingCost
 import InvestmentCard from './InvestmentCard';
 import ResultInfoCard from './ResultInfoCard';
 import ReturnCard from './ReturnCard';
-import { getCashOnCash } from './Utils/Utils';
+import { getCapRate, getCashOnCash } from './Utils/Utils';
 
 function PropertySection() {
     const purchasePrice = useRecoilValue(purchasePriceState);
@@ -37,6 +37,18 @@ function PropertySection() {
         capitalExpRate,
         monthlyRent,
     );
+
+    const capRate = getCapRate(
+        purchasePrice,
+        vacancyRate,
+        monthlyTax,
+        hoaFee,
+        managementRate,
+        monthlyInsurance,
+        monthlyReserve,
+        capitalExpRate,
+        monthlyRent,
+    );
 	return (
 		<div style={{padding: 20}}>
             <Row>
@@ -49,7 +61,7 @@ function PropertySection() {
                 <Col span={6}>
                     <ResultInfoCard 
                         title="Cap Rate"
-                        result="10%"
+                        result={capRate}
                     />
                 </Col>
                 <Col span={6}>

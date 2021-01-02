@@ -23,7 +23,7 @@ export function getMontlyNetOperationExpense(
     return vacancyFactor + monthlyTax + hoaFee + managementCost + monthlyInsurance + monthlyRepair + monthlyCapitalExp;
 }
 
-export function getMonthlyNetOperationIncome(
+export function getMonthlyCashflow(
     monthlyOperationExp: number,
     rent: number,
     monthlyMortgage: number,
@@ -31,7 +31,7 @@ export function getMonthlyNetOperationIncome(
     return Math.floor(rent - monthlyOperationExp - monthlyMortgage);
 }
 
-export function getMonthlyNOI(
+export function calculateMonthlyCashflow(
     purchasePrice: number,
     downPercentage: number,
     interestRate: number,
@@ -55,12 +55,34 @@ export function getMonthlyNOI(
         (monthlyRepair / 100) * monthlyRent,
         (monthlyCapitalExp / 100) * monthlyRent,
     );
-    const monthlyNOI = getMonthlyNetOperationIncome(
+    const monthlyNOI = getMonthlyCashflow(
         monthlyNOE, 
         monthlyRent, 
         monthlyMortgage,
     );
     return monthlyNOI;
+}
+
+export function getMontlyNetOperationIncome(
+    monthlyRent: number,
+    vacancyFactor: number,
+    monthlyTax: number,
+    hoaFee: number,
+    managementCost: number,
+    monthlyInsurance: number,
+    monthlyRepair: number,
+    monthlyCapitalExp: number,
+): number {
+    const monthlyOperationExp = getMontlyNetOperationExpense(
+        (vacancyFactor / 100) * monthlyRent,
+        monthlyTax,
+        hoaFee,
+        (managementCost / 100) * monthlyRent,
+        monthlyInsurance,
+        (monthlyRepair / 100) * monthlyRent,
+        (monthlyCapitalExp / 100) * monthlyRent,
+    );
+    return Math.floor(monthlyRent - monthlyOperationExp);
 }
 
 export function getCashOnCash(
@@ -78,7 +100,7 @@ export function getCashOnCash(
     monthlyCapitalExp: number,
     monthlyRent: number,
 ): string {
-    const annualNOI = 12 * getMonthlyNOI(
+    const annualNOI = 12 * calculateMonthlyCashflow(
         purchasePrice,
         downPercentage,
         interestRate,
@@ -91,6 +113,33 @@ export function getCashOnCash(
         monthlyCapitalExp,
         monthlyRent,
     );
-    const initialInvestment = closingCost + immediateCost + purchasePrice * downPercentage / 100;
+    const closingFee = (closingCost / 100) * purchasePrice;
+    const downPayment = purchasePrice * downPercentage / 100;
+    const loanFee = purchasePrice * (1 - downPercentage / 100) * 0.05;
+    const initialInvestment = closingFee + immediateCost + downPayment + loanFee;
     return `${(annualNOI * 100 / initialInvestment).toFixed(1)}%`;
+}
+
+export function getCapRate(
+    purchasePrice: number,
+    vacancyFactor: number,
+    monthlyTax: number,
+    hoaFee: number,
+    managementCost: number,
+    monthlyInsurance: number,
+    monthlyRepair: number,
+    monthlyCapitalExp: number,
+    monthlyRent: number,
+): string {
+    const annualNOI = 12 * getMontlyNetOperationIncome(
+        monthlyRent,
+        vacancyFactor,
+        monthlyTax,
+        hoaFee,
+        managementCost,
+        monthlyInsurance,
+        monthlyRepair,
+        monthlyCapitalExp,
+    );
+    return `${(annualNOI * 100 / purchasePrice).toFixed(1)}%`;
 }
