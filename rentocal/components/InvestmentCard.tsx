@@ -9,6 +9,7 @@ import {
     immediateCostState,
     managementRateState,
     vacancyRateState,
+    monthlyReserveState,
 } from 'recoilAtoms';
 
 type Props = {};
@@ -21,6 +22,7 @@ function InvestmentCard(props: Props) {
     const [immediateCost, setImmediateCost] = useRecoilState(immediateCostState);
     const [vacancyRate, setVacancyRate] = useRecoilState(vacancyRateState);
     const [managementRate, setManagementRate] = useRecoilState(managementRateState);
+    const [monthlyReserve, setMonthlyReserve] = useRecoilState(monthlyReserveState);
 
 
 	return (
@@ -90,6 +92,16 @@ function InvestmentCard(props: Props) {
                 value={managementRate} 
                 onChange={(value: number) => {
                     setManagementRate(value);
+                }}
+                max={10}
+                min={0}
+                step = {1}
+            />
+            <div style={{paddingTop: 20}}>Monthly Repair: {monthlyReserve}%</div>
+            <Slider 
+                value={monthlyReserve} 
+                onChange={(value: number) => {
+                    setMonthlyReserve(value);
                 }}
                 max={10}
                 min={0}

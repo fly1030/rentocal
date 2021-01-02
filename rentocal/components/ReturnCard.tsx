@@ -12,7 +12,7 @@ function ReturnCard(props: Props) {
         <div>
             <Row>
                 <Col>
-                    <div>Monthly Rent: {monthlyRent}</div>
+                    <div>Monthly Rent: ${monthlyRent}</div>
                     <Slider 
                         style={{paddingBottom: 20}}
                         value={monthlyRent} 
