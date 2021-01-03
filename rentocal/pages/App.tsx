@@ -23,6 +23,7 @@ import {
   bathroomCountState,
   bedroomCountState,
   yearBuiltState,
+  uniqueIDState,
 } from "recoilAtoms";
 
 type Props = {
@@ -48,6 +49,7 @@ const App = (props: Props) => {
   const setBedroomCount = useSetRecoilState(bedroomCountState);
   const setBathroomCount = useSetRecoilState(bathroomCountState);
   const setYearBuilt = useSetRecoilState(yearBuiltState);
+  const setUniqueID = useSetRecoilState(uniqueIDState);
 
   const {propertyEntries} = props;
   let tempProperty = null;
@@ -86,6 +88,7 @@ const App = (props: Props) => {
       monthly_insurance,
       capital_exp_rate,
       year_built,
+      unique_id,
     } = targetProperty;
     setPurchasePrice(price);
     setDownPercentage(down_percentage);
@@ -104,6 +107,7 @@ const App = (props: Props) => {
     setBedroomCount(bedroom_count);
     setBathroomCount(bathroom_count);
     setYearBuilt(year_built);
+    setUniqueID(unique_id);
   }, [selectedProperty]);
 
   return (

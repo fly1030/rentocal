@@ -1,11 +1,12 @@
 import { Button, Card, Form, Input, InputNumber, Modal, Statistic } from 'antd';
 import React, { useState } from 'react';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { 
     propertyAddressState, 
     bedroomCountState, 
     bathroomCountState, 
     yearBuiltState,
+    uniqueIDState,
 } from 'recoilAtoms';
 import {EditOutlined} from '@ant-design/icons';
 import { gql, useMutation } from '@apollo/client';
@@ -27,9 +28,6 @@ const UPDATE_PROPERTY_INFO = gql`
             updated_year_built: $updated_year_built,
         ) {
             id
-            bedroom_count
-            bathroom_count
-            year_built
         }
     }
 `;
@@ -39,6 +37,7 @@ function PropertyInfoCard() {
     const [bedroomCount, setBedroomCount] = useRecoilState(bedroomCountState);
     const [bathroomCount, setBathroomCount] = useRecoilState(bathroomCountState);
     const [yearBuilt, setYearBuilt] = useRecoilState(yearBuiltState);
+    const uniqueID = useRecoilValue(uniqueIDState);
     const [origAddress, setOrigAddress] = useState<string>(propertyAddress);
     const [updatePropertyInfo] = useMutation(UPDATE_PROPERTY_INFO, {client: getApolloClient()});
     const [isPropertyInfoModalVisible, setIsPropertyInfoModalVisible] = useState<boolean>(false);
@@ -87,11 +86,11 @@ function PropertyInfoCard() {
                     updatePropertyInfo(
                         { variables: 
                             { 
-                                orig_id: origAddress,
+                                orig_id: uniqueID,
                                 updated_id: propertyAddress,
                                 updated_bedroom_count: bedroomCount,
                                 updated_bathroom_count: bathroomCount,
-                                updated_year_built: yearBuilt,
+                                updated_year_built: String(yearBuilt),
                             } 
                         }
                     );

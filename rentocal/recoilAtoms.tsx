@@ -84,3 +84,8 @@ export const yearBuiltState = atom({
     key: 'yearBuiltState',
     default: 2021,
 });
+
+export const uniqueIDState = atom({
+    key: 'uniqueIDState',
+    default: '',
+});
