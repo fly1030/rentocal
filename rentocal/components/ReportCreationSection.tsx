@@ -19,18 +19,18 @@ function ReportCreationSection(props: Props) {
     const [bathroomCount, setBathroomCount] = useState<number>(0);
     const [yearBuilt, setYearBuilt] = useState<string>("2021");
     const [purchasePrice, setPurchasePrice] = useState<number>(0);
-    const [downPercentage, setDownPercentage] = useState<number>(0);
-    const [interestRate, setInterestRate] = useState<number>(0);
+    const [downPercentage, setDownPercentage] = useState<number>(25);
+    const [interestRate, setInterestRate] = useState<number>(3.0);
     const [immediateCost, setImmediateCost] = useState<number>(0);
-    const [closingCost, setClosingCost] = useState<number>(0);
+    const [closingCost, setClosingCost] = useState<number>(1.5);
     const [monthlyRent, setMonthlyRent] = useState<number>(0);
-    const [vacancyRate, setVacancyRate] = useState<number>(0);
-    const [managementRate, setManagementRate] = useState<number>(0);
-    const [repairReserve, setRepairReserve] = useState<number>(0);
+    const [vacancyRate, setVacancyRate] = useState<number>(5);
+    const [managementRate, setManagementRate] = useState<number>(6);
+    const [repairReserve, setRepairReserve] = useState<number>(5);
     const [monthlyTax, setMonthlyTax] = useState<number>(0);
     const [monthlyInsurance, setMonthlyInsurance] = useState<number>(0);
     const [hoaFee, setHoaFee] = useState<number>(0);
-    const [capitalExp, setCapitalExp] = useState<number>(0);
+    const [capitalExp, setCapitalExp] = useState<number>(5);
 
 	return (
         <div>
@@ -268,7 +268,7 @@ function ReportCreationForm(
                         </Form.Item>
                         <Form.Item 
                             name={'interest'} 
-                            label="Interest Rate" 
+                            label="Interest Rate %" 
                             required={true}
                             initialValue={interestRate}
                         >
@@ -391,7 +391,7 @@ function ReportCreationForm(
                         </Form.Item>
                         <Form.Item 
                             name={'capitalExp'} 
-                            label="Capital Expenditures" 
+                            label="Capital Expenditures %" 
                             required={true}
                             initialValue={capitalExp}
                         >
