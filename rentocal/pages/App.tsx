@@ -4,6 +4,7 @@ import Layout, { Content } from "antd/lib/layout/layout";
 import Sider from "antd/lib/layout/Sider";
 import HomepageHeader from "components/HomepageHeader";
 import PropertySection from "components/PropertySection";
+import ReportCreationSection from "components/ReportCreationSection";
 import React, { useEffect, useState } from "react";
 import { useSetRecoilState } from "recoil";
 import { 
@@ -153,7 +154,7 @@ const App = (props: Props) => {
           onOk={() => setIsCreationModalVisible(false)} 
           onCancel={() => {setIsCreationModalVisible(false)}}
         >
-          <p>Placeholder</p>
+          <ReportCreationSection />
         </Modal>
     </Layout>
   );
