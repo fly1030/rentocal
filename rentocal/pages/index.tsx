@@ -1,15 +1,12 @@
-import { ApolloClient, InMemoryCache, gql } from "@apollo/client";
+import { gql } from "@apollo/client";
+import { getApolloClient } from "components/Utils/Utils";
 import { GetServerSideProps } from "next";
 import App from "pages/App";
 import React from "react";
 import { RecoilRoot } from "recoil";
 
 export const getServerSideProps: GetServerSideProps = async (_context) => {
-  const client = new ApolloClient({
-    uri: 'https://rentocal-dfc8c.wm.r.appspot.com',
-    cache: new InMemoryCache(),
-  });
-
+  const client = getApolloClient();
   const { data } = await client.query({
     query: gql`
       query {

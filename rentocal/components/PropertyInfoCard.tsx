@@ -1,21 +1,53 @@
 import { Button, Card, Form, Input, InputNumber, Modal, Statistic } from 'antd';
 import React, { useState } from 'react';
 import { useRecoilState } from 'recoil';
-import { propertyAddressState, bedroomCountState, bathroomCountState, yearBuiltState } from 'recoilAtoms';
+import { 
+    propertyAddressState, 
+    bedroomCountState, 
+    bathroomCountState, 
+    yearBuiltState,
+} from 'recoilAtoms';
 import {EditOutlined} from '@ant-design/icons';
+import { gql, useMutation } from '@apollo/client';
+import { getApolloClient } from './Utils/Utils';
+
+const UPDATE_PROPERTY_INFO = gql`
+    mutation UpdatePropertyInfo(
+        $orig_id: String!,
+        $updated_id: String!,
+        $updated_bedroom_count: Int!,
+        $updated_bathroom_count: Int!,
+        $updated_year_built: String!,
+    ) {
+        updatePropertyInfo(
+            orig_id: $orig_id,
+            updated_id: $updated_id,
+            updated_bedroom_count: $updated_bedroom_count,
+            updated_bathroom_count: $updated_bathroom_count,
+            updated_year_built: $updated_year_built,
+        ) {
+            id
+            bedroom_count
+            bathroom_count
+            year_built
+        }
+    }
+`;
 
 function PropertyInfoCard() {
     const [propertyAddress, setPropertyAddress] = useRecoilState(propertyAddressState);
     const [bedroomCount, setBedroomCount] = useRecoilState(bedroomCountState);
     const [bathroomCount, setBathroomCount] = useRecoilState(bathroomCountState);
     const [yearBuilt, setYearBuilt] = useRecoilState(yearBuiltState);
+    const [origAddress, setOrigAddress] = useState<string>(propertyAddress);
+    const [updatePropertyInfo] = useMutation(UPDATE_PROPERTY_INFO, {client: getApolloClient()});
+    const [isPropertyInfoModalVisible, setIsPropertyInfoModalVisible] = useState<boolean>(false);
 
     const layout = {
         labelCol: { span: 8 },
         wrapperCol: { span: 16 },
     };
 
-    const [isPropertyInfoModalVisible, setIsPropertyInfoModalVisible] = useState<boolean>(false);
 	return (
         <>
             <Card 
@@ -51,7 +83,20 @@ function PropertyInfoCard() {
             <Modal 
                 title="Update Property Info" 
                 visible={isPropertyInfoModalVisible} 
-                onOk={() => {setIsPropertyInfoModalVisible(false)}} 
+                onOk={async () => {
+                    updatePropertyInfo(
+                        { variables: 
+                            { 
+                                orig_id: origAddress,
+                                updated_id: propertyAddress,
+                                updated_bedroom_count: bedroomCount,
+                                updated_bathroom_count: bathroomCount,
+                                updated_year_built: yearBuilt,
+                            } 
+                        }
+                    );
+                    setIsPropertyInfoModalVisible(false);
+                }} 
                 onCancel={() => {setIsPropertyInfoModalVisible(false)}}
             >
                 <Form 

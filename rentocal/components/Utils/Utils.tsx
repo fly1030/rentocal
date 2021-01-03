@@ -1,3 +1,12 @@
+import { ApolloClient, InMemoryCache } from "@apollo/client";
+
+export function getApolloClient() {
+    return new ApolloClient({
+        uri: 'https://rentocal-dfc8c.wm.r.appspot.com',
+        cache: new InMemoryCache(),
+    });
+}
+
 export function getMontlyMortgage(
     principle: number,
     interestRate: number,
