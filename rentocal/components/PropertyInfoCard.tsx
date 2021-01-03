@@ -38,7 +38,6 @@ function PropertyInfoCard() {
     const [bathroomCount, setBathroomCount] = useRecoilState(bathroomCountState);
     const [yearBuilt, setYearBuilt] = useRecoilState(yearBuiltState);
     const uniqueID = useRecoilValue(uniqueIDState);
-    const [origAddress, setOrigAddress] = useState<string>(propertyAddress);
     const [updatePropertyInfo] = useMutation(UPDATE_PROPERTY_INFO, {client: getApolloClient()});
     const [isPropertyInfoModalVisible, setIsPropertyInfoModalVisible] = useState<boolean>(false);
 

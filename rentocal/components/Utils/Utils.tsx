@@ -2,6 +2,7 @@ import { ApolloClient, InMemoryCache } from "@apollo/client";
 
 export function getApolloClient() {
     return new ApolloClient({
+        // uri: 'http://localhost:4000',
         uri: 'https://rentocal-dfc8c.wm.r.appspot.com',
         cache: new InMemoryCache(),
     });

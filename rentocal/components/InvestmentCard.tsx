@@ -16,9 +16,7 @@ import {
     capitalExpRateState,
 } from 'recoilAtoms';
 
-type Props = {};
-
-function InvestmentCard(props: Props) {
+function InvestmentCard() {
     const [purchasePrice, setPurchasePrice] = useRecoilState(purchasePriceState);
     const [downPercentage, setDownPercentage] = useRecoilState(downPercentageState);
     const [interestRate, setInterestRate] = useRecoilState(interestRateState);
