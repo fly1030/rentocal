@@ -1,4 +1,5 @@
-import { Menu } from "antd";
+import { PlusOutlined } from "@ant-design/icons";
+import { Button, Divider, Menu, Modal } from "antd";
 import Layout, { Content } from "antd/lib/layout/layout";
 import Sider from "antd/lib/layout/Sider";
 import HomepageHeader from "components/HomepageHeader";
@@ -57,6 +58,7 @@ const App = (props: Props) => {
     tempProperty = propertyEntries[0];
   }
   const [selectedProperty, setSelectedProperty] = useState<string>(tempProperty != null ? tempProperty.id : '');
+  const [isCreationModalVisible, setIsCreationModalVisible] = useState<boolean>(false);
 
   useEffect(() => {
     if (selectedProperty == null) {
@@ -127,15 +129,32 @@ const App = (props: Props) => {
                     }
                     }
                 >
-                    {propertyEntries.map((property) => {
+                  <Button 
+                    style={{width: '94%', marginLeft: 8, marginTop: 20}}
+                    type="primary"
+                    icon={<PlusOutlined />}
+                    onClick={() => setIsCreationModalVisible(true)}
+                  >
+                    Create New Report
+                  </Button>
+                  <Divider />
+                  {propertyEntries.map((property) => {
                     return <Menu.Item key={property.id}>{property.id}</Menu.Item>
-                    })}
+                  })}
                 </Menu>
             </Sider>
             <Content>
                 <PropertySection />
             </Content>
         </Layout>
+        <Modal 
+          title="Create Report" 
+          visible={isCreationModalVisible} 
+          onOk={() => setIsCreationModalVisible(false)} 
+          onCancel={() => {setIsCreationModalVisible(false)}}
+        >
+          <p>Placeholder</p>
+        </Modal>
     </Layout>
   );
 }
