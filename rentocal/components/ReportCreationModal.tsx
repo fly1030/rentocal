@@ -138,6 +138,7 @@ function ReportCreationModal(props: Props) {
                 setIsCreationModalVisible(false);
             }} 
             onCancel={() => {setIsCreationModalVisible(false)}}
+            okButtonProps={{disabled: currentStep < 3}}
         >
             <div>
                 <Steps
@@ -240,8 +241,8 @@ function ReportCreationForm(
     }
 ): ReactNode {
     const layout = {
-        labelCol: { span: 8 },
-        wrapperCol: { span: 16 },
+        labelCol: { span: 4 },
+        wrapperCol: { span: 20 },
     };
     const {
         currentStep,
