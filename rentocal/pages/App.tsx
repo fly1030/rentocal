@@ -1,10 +1,10 @@
 import { PlusOutlined } from "@ant-design/icons";
-import { Button, Divider, Menu, Modal } from "antd";
+import { Button, Divider, Menu } from "antd";
 import Layout, { Content } from "antd/lib/layout/layout";
 import Sider from "antd/lib/layout/Sider";
 import HomepageHeader from "components/HomepageHeader";
 import PropertySection from "components/PropertySection";
-import ReportCreationSection from "components/ReportCreationSection";
+import ReportCreationModal from "components/ReportCreationModal";
 import React, { useEffect, useState } from "react";
 import { useSetRecoilState } from "recoil";
 import { 
@@ -148,14 +148,11 @@ const App = (props: Props) => {
                 <PropertySection />
             </Content>
         </Layout>
-        <Modal 
-          title="Create Report" 
-          visible={isCreationModalVisible} 
-          onOk={() => setIsCreationModalVisible(false)} 
-          onCancel={() => {setIsCreationModalVisible(false)}}
-        >
-          <ReportCreationSection />
-        </Modal>
+        <ReportCreationModal 
+          isCreationModalVisible={isCreationModalVisible}
+          setIsCreationModalVisible={setIsCreationModalVisible}
+          setSelectedProperty={(value: string) => setSelectedProperty(value)}
+        />
     </Layout>
   );
 }

@@ -1,9 +1,15 @@
-import { Form, Input, InputNumber, Steps } from 'antd';
+import { gql, useMutation } from '@apollo/client';
+import { Form, Input, InputNumber, Modal, Steps } from 'antd';
 const { Step } = Steps;
 import React, { ReactNode, useState } from 'react';
 import StepButtonGroup from './StepButtonGroup';
+import { getApolloClient } from './Utils/Utils';
 
-type Props = {};
+type Props = {
+    isCreationModalVisible: boolean,
+    setIsCreationModalVisible: (value: boolean) => void,
+    setSelectedProperty: (value: string) => void,
+};
 
 const INFO_STEPS = [
     "Property", 
@@ -12,7 +18,53 @@ const INFO_STEPS = [
     "Finish",
 ];
 
-function ReportCreationSection(props: Props) {
+const CREATE_PROERTY = gql`
+    mutation CreateProperty(
+        $bathroom_count: Int!,
+        $bedroom_count: Int!,
+        $capital_exp_rate: Float!,
+        $closing_cost: Float!,
+        $down_percentage: Float!,
+        $hoa_fee: Int!,
+        $id: String!,
+        $immediate_cost: Float!,
+        $interest_rate: Float!,
+        $management_rate: Float!,
+        $monthly_insurance: Float!,
+        $monthly_rent: Int!,
+        $monthly_tax: Float!,
+        $price: Int!,
+        $reserve_rate: Float!,
+        $unique_id: String!,
+        $vacancy_rate: Float!,
+        $year_built: String!,
+    ) {
+        createProperty(
+            bathroom_count: $bathroom_count,
+            bedroom_count: $bedroom_count,
+            capital_exp_rate: $capital_exp_rate,
+            closing_cost: $closing_cost,
+            down_percentage: $down_percentage,
+            hoa_fee: $hoa_fee,
+            id: $id,
+            immediate_cost: $immediate_cost,
+            interest_rate: $interest_rate,
+            management_rate: $management_rate,
+            monthly_insurance: $monthly_insurance,
+            monthly_rent: $monthly_rent,
+            monthly_tax: $monthly_tax,
+            price: $price,
+            reserve_rate: $reserve_rate,
+            unique_id: $unique_id,
+            vacancy_rate: $vacancy_rate,
+            year_built: $year_built,
+        ) {
+            unique_id
+        }
+    }
+`;
+
+function ReportCreationModal(props: Props) {
     const [currentStep, setCurrentStep] = useState<number>(0);
     const [propertyAddress, setPropertyAddress] = useState<string>('');
     const [bedroomCount, setBedroomCount] = useState<number>(0);
@@ -31,64 +83,118 @@ function ReportCreationSection(props: Props) {
     const [monthlyInsurance, setMonthlyInsurance] = useState<number>(0);
     const [hoaFee, setHoaFee] = useState<number>(0);
     const [capitalExp, setCapitalExp] = useState<number>(5);
+    const {
+        isCreationModalVisible, 
+        setIsCreationModalVisible, 
+        setSelectedProperty,
+    } = props;
+
+    const [createProperty] = useMutation(
+        CREATE_PROERTY, 
+        {
+            client: getApolloClient(),
+            onCompleted: (data) => {
+                setSelectedProperty(data.createProperty.unique_id);
+            },
+            onError: ({networkError, graphQLErrors}) => {
+                console.log('graphQLErrors: ', graphQLErrors);
+                console.log('networkError: ', networkError);
+            }
+    });
+
 
 	return (
-        <div>
-            <Steps
-                style={{marginBottom: 20}}
-                size="small" 
-                current={currentStep}
-            >
+        <Modal 
+            title="Create Report" 
+            visible={isCreationModalVisible} 
+            onOk={() => {
+                const propertyID = propertyAddress.replace(/,/g, '').replace(/ /g, '-');
+                createProperty(
+                    { variables: 
+                        { 
+                            bathroom_count: Number(bathroomCount),
+                            bedroom_count: Number(bedroomCount),
+                            capital_exp_rate: Number(capitalExp),
+                            closing_cost: Number(closingCost),
+                            down_percentage: Number(downPercentage),
+                            hoa_fee: Number(hoaFee),
+                            id: propertyID,
+                            immediate_cost: Number(immediateCost),
+                            interest_rate: Number(interestRate),
+                            management_rate: Number(managementRate),
+                            monthly_insurance: Number(monthlyInsurance),
+                            monthly_rent: Number(monthlyRent),
+                            monthly_tax: Number(monthlyTax),
+                            price: Number(purchasePrice),
+                            reserve_rate: Number(repairReserve),
+                            unique_id: propertyID,
+                            vacancy_rate: Number(vacancyRate),
+                            year_built: yearBuilt,
+                        } 
+                    }
+                );
+                setIsCreationModalVisible(false);
+            }} 
+            onCancel={() => {setIsCreationModalVisible(false)}}
+        >
+            <div>
+                <Steps
+                    style={{marginBottom: 20}}
+                    size="small" 
+                    current={currentStep}
+                >
+                    {
+                        INFO_STEPS.map((step, index) => {
+                            return <Step key={index} title={step}/>
+                        })
+                    }
+                </Steps>
                 {
-                    INFO_STEPS.map((step, index) => {
-                        return <Step key={index} title={step}/>
+                    ReportCreationForm({
+                            currentStep: currentStep,
+                            setPropertyAddress: setPropertyAddress,
+                            setBedroomCount: setBedroomCount,
+                            setBathroomCount: setBathroomCount,
+                            setYearBuilt: setYearBuilt,
+                            setPurchasePrice: setPurchasePrice,
+                            setDownPercentage: setDownPercentage,
+                            setInterestRate: setInterestRate,
+                            setClosingCost: setClosingCost,
+                            setImmediateCost: setImmediateCost,
+                            setMonthlyRent: setMonthlyRent,
+                            setVacancyRate: setVacancyRate,
+                            setManagementRate: setManagementRate,
+                            setRepairReserve: setRepairReserve,
+                            setMonthlyTax: setMonthlyTax,
+                            setMonthlyInsurance: setMonthlyInsurance,
+                            setHoaFee: setHoaFee,
+                            setCapitalExp: setCapitalExp,
+                            propertyAddress: propertyAddress,
+                            bedroomCount: bedroomCount,
+                            bathroomCount: bathroomCount,
+                            yearBuilt: yearBuilt,
+                            purchasePrice: purchasePrice,
+                            downPercentage: downPercentage,
+                            interestRate: interestRate,
+                            closingCost: closingCost,
+                            immediateCost: immediateCost,
+                            monthlyRent: monthlyRent,
+                            vacancyRate: vacancyRate,
+                            managementRate: managementRate,
+                            repairReserve: repairReserve,
+                            monthlyTax: monthlyTax,
+                            monthlyInsurance: monthlyInsurance,
+                            hoaFee: hoaFee,
+                            capitalExp: capitalExp,
                     })
                 }
-            </Steps>
-            {
-                ReportCreationForm({
-                        currentStep: currentStep,
-                        setPropertyAddress: setPropertyAddress,
-                        setBedroomCount: setBedroomCount,
-                        setBathroomCount: setBathroomCount,
-                        setYearBuilt: setYearBuilt,
-                        setPurchasePrice: setPurchasePrice,
-                        setDownPercentage: setDownPercentage,
-                        setInterestRate: setInterestRate,
-                        setClosingCost: setClosingCost,
-                        setImmediateCost: setImmediateCost,
-                        setMonthlyRent: setMonthlyRent,
-                        setVacancyRate: setVacancyRate,
-                        setManagementRate: setManagementRate,
-                        setRepairReserve: setRepairReserve,
-                        setMonthlyTax: setMonthlyTax,
-                        setMonthlyInsurance: setMonthlyInsurance,
-                        setHoaFee: setHoaFee,
-                        setCapitalExp: setCapitalExp,
-                        propertyAddress: propertyAddress,
-                        bedroomCount: bedroomCount,
-                        bathroomCount: bathroomCount,
-                        yearBuilt: yearBuilt,
-                        purchasePrice: purchasePrice,
-                        downPercentage: downPercentage,
-                        interestRate: interestRate,
-                        closingCost: closingCost,
-                        immediateCost: immediateCost,
-                        monthlyRent: monthlyRent,
-                        vacancyRate: vacancyRate,
-                        managementRate: managementRate,
-                        repairReserve: repairReserve,
-                        monthlyTax: monthlyTax,
-                        monthlyInsurance: monthlyInsurance,
-                        hoaFee: hoaFee,
-                        capitalExp: capitalExp,
-                })
-            }
-            <StepButtonGroup
-                currentStep={currentStep}
-                setCurrentStep={setCurrentStep}
-            />
-        </div>
+                <StepButtonGroup
+                    currentStep={currentStep}
+                    setCurrentStep={setCurrentStep}
+                />
+            </div>
+        </Modal>
+
 	)
 }
 
@@ -404,4 +510,4 @@ function ReportCreationForm(
     }
 }
 
-export default ReportCreationSection
+export default ReportCreationModal

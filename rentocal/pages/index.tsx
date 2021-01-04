@@ -5,33 +5,35 @@ import App from "pages/App";
 import React from "react";
 import { RecoilRoot } from "recoil";
 
+const GET_PROPERTIES = gql`
+query {
+  properties {
+    id
+    bathroom_count
+    bedroom_count
+    price
+    down_percentage
+    management_rate
+    monthly_rent
+    vacancy_rate
+    immediate_cost
+    reserve_rate
+    closing_cost
+    interest_rate
+    hoa_fee
+    monthly_tax
+    monthly_insurance
+    capital_exp_rate
+    year_built
+    unique_id
+  }
+}
+`;
+
 export const getServerSideProps: GetServerSideProps = async (_context) => {
   const client = getApolloClient();
   const { data } = await client.query({
-    query: gql`
-      query {
-        properties {
-          id
-          bathroom_count
-          bedroom_count
-          price
-          down_percentage
-          management_rate
-          monthly_rent
-          vacancy_rate
-          immediate_cost
-          reserve_rate
-          closing_cost
-          interest_rate
-          hoa_fee
-          monthly_tax
-          monthly_insurance
-          capital_exp_rate
-          year_built
-          unique_id
-        }
-      }
-    `
+    query: GET_PROPERTIES
   });
   const properties = data;
   const propertyEntries = properties.properties;
