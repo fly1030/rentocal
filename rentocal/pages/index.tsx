@@ -2,7 +2,7 @@ import { gql } from "@apollo/client";
 import { getApolloClient } from "components/Utils/Utils";
 import { GetServerSideProps } from "next";
 import App from "pages/App";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { RecoilRoot } from "recoil";
 
 const GET_PROPERTIES = gql`
@@ -46,9 +46,28 @@ type Props = {
 
 const Home = (props: Props) => {
   const {propertyEntries} = props;
+  const [newEntries, setNewEntries] = useState<number>(0);
+  const [propertyEntriesState, setPropertyEntiresState] = useState<Array<{[key: string]: any}>>(propertyEntries);
+ 
+  useEffect(() => {
+    async function getNewProperties() {
+      const client = getApolloClient();
+      const { data } = await client.query({
+        query: GET_PROPERTIES
+      });
+      const properties = data;
+      const propertyEntries = properties.properties;
+      setPropertyEntiresState(propertyEntries);
+    }
+    getNewProperties();
+  }, [newEntries]);
+  
   return (
     <RecoilRoot>
-      <App propertyEntries={propertyEntries}/>
+      <App 
+        propertyEntries={propertyEntriesState} 
+        setNewEntries={() => {setNewEntries(newEntries + 1)}}
+      />
     </RecoilRoot>
   );
 }

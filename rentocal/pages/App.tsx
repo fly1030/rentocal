@@ -30,6 +30,7 @@ import {
 
 type Props = {
   propertyEntries: Array<{[key: string]: any}>,
+  setNewEntries: () => void,
 }
 
 const App = (props: Props) => {
@@ -53,7 +54,7 @@ const App = (props: Props) => {
   const setYearBuilt = useSetRecoilState(yearBuiltState);
   const setUniqueID = useSetRecoilState(uniqueIDState);
 
-  const {propertyEntries} = props;
+  const {propertyEntries, setNewEntries} = props;
   let tempProperty = null;
   if (propertyEntries.length > 0) {
     tempProperty = propertyEntries[0];
@@ -152,6 +153,7 @@ const App = (props: Props) => {
           isCreationModalVisible={isCreationModalVisible}
           setIsCreationModalVisible={setIsCreationModalVisible}
           setSelectedProperty={(value: string) => setSelectedProperty(value)}
+          setNewEntries={setNewEntries}
         />
     </Layout>
   );

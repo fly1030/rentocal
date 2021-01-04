@@ -9,6 +9,7 @@ type Props = {
     isCreationModalVisible: boolean,
     setIsCreationModalVisible: (value: boolean) => void,
     setSelectedProperty: (value: string) => void,
+    setNewEntries: () => void,
 };
 
 const INFO_STEPS = [
@@ -87,6 +88,7 @@ function ReportCreationModal(props: Props) {
         isCreationModalVisible, 
         setIsCreationModalVisible, 
         setSelectedProperty,
+        setNewEntries,
     } = props;
 
     const [createProperty] = useMutation(
@@ -94,14 +96,14 @@ function ReportCreationModal(props: Props) {
         {
             client: getApolloClient(),
             onCompleted: (data) => {
-                setSelectedProperty(data.createProperty.unique_id);
+                setNewEntries();
+                // setSelectedProperty(data.createProperty.unique_id);
             },
             onError: ({networkError, graphQLErrors}) => {
                 console.log('graphQLErrors: ', graphQLErrors);
                 console.log('networkError: ', networkError);
             }
     });
-
 
 	return (
         <Modal 
