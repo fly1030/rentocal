@@ -1,3 +1,4 @@
+import Router, { useRouter } from 'next/router';
 import { DeleteOutlined, PlusOutlined } from "@ant-design/icons";
 import { Button, Divider, Menu } from "antd";
 import Layout, { Content } from "antd/lib/layout/layout";
@@ -35,7 +36,6 @@ type Props = {
 }
 
 const App = (props: Props) => {
-  console.log('input props: ', props);
   const setPurchasePrice = useSetRecoilState(purchasePriceState);
   const setDownPercentage = useSetRecoilState(downPercentageState);
   const setInterestRate = useSetRecoilState(interestRateState);
@@ -56,11 +56,15 @@ const App = (props: Props) => {
   const setUniqueID = useSetRecoilState(uniqueIDState);
 
   const {propertyEntries, setNewEntries} = props;
+  const {
+    query: { id },
+  } = useRouter();
+  
   let tempProperty: {[key: string]: any} | null = null;
   if (propertyEntries.length > 0) {
     tempProperty = propertyEntries[0];
   }
-  const [selectedProperty, setSelectedProperty] = useState<string>(tempProperty != null ? tempProperty.id : '');
+  const [selectedProperty, setSelectedProperty] = useState<string>(id ?? (tempProperty != null ? tempProperty.id : ''));
   const [isCreationModalVisible, setIsCreationModalVisible] = useState<boolean>(false);
   const [isDeletionModalVisible, setIsDeletionModalVisible] = useState<boolean>(false);
 
@@ -129,6 +133,10 @@ const App = (props: Props) => {
                     onSelect={
                       (menu) => {
                         setSelectedProperty(String(menu.key));
+                        Router.push({
+                          pathname: '/',
+                          query: { id: String(menu.key) }
+                      })
                       }
                     }
                 >
