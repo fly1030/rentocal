@@ -1,10 +1,11 @@
-import { PlusOutlined } from "@ant-design/icons";
+import { DeleteOutlined, PlusOutlined } from "@ant-design/icons";
 import { Button, Divider, Menu } from "antd";
 import Layout, { Content } from "antd/lib/layout/layout";
 import Sider from "antd/lib/layout/Sider";
 import HomepageHeader from "components/HomepageHeader";
 import PropertySection from "components/PropertySection";
 import ReportCreationModal from "components/ReportCreationModal";
+import ReportDeletionModal from "components/ReportDeletionModal";
 import React, { useEffect, useState } from "react";
 import { useSetRecoilState } from "recoil";
 import { 
@@ -61,6 +62,7 @@ const App = (props: Props) => {
   }
   const [selectedProperty, setSelectedProperty] = useState<string>(tempProperty != null ? tempProperty.id : '');
   const [isCreationModalVisible, setIsCreationModalVisible] = useState<boolean>(false);
+  const [isDeletionModalVisible, setIsDeletionModalVisible] = useState<boolean>(false);
 
   useEffect(() => {
     if (selectedProperty == null) {
@@ -126,9 +128,8 @@ const App = (props: Props) => {
                     style={{ height: '100%', borderRight: 0 }}
                     onSelect={
                       (menu) => {
-                        console.log('key is: ', menu.key);
                         setSelectedProperty(String(menu.key));
-                    }
+                      }
                     }
                 >
                   <Button 
@@ -141,7 +142,26 @@ const App = (props: Props) => {
                   </Button>
                   <Divider />
                   {propertyEntries.map((property) => {
-                    return <Menu.Item key={property.id}>{property.id}</Menu.Item>
+                    return <Menu.Item key={property.id}>
+                      <div style={{display: 'flex'}}>
+                        <div style={{
+                          width: 240,
+                          whiteSpace: 'nowrap',
+                          overflow: 'hidden',
+                          textOverflow: 'ellipsis',
+                        }}>{property.id}</div>
+                        <div 
+                          style={{
+                            marginLeft: 10
+                          }}
+                          onClick = {() => {
+                            setIsDeletionModalVisible(true);
+                          }}
+                        >
+                          <DeleteOutlined />
+                        </div>
+                      </div>
+                    </Menu.Item>
                   })}
                 </Menu>
             </Sider>
@@ -154,6 +174,11 @@ const App = (props: Props) => {
           setIsCreationModalVisible={setIsCreationModalVisible}
           setSelectedProperty={(value: string) => setSelectedProperty(value)}
           setNewEntries={setNewEntries}
+        />
+        <ReportDeletionModal 
+          isDeletionModalVisible={isDeletionModalVisible}
+          setIsDeletionModalVisible={setIsDeletionModalVisible}
+          propertyId={selectedProperty}
         />
     </Layout>
   );
