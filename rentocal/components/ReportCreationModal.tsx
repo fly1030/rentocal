@@ -312,7 +312,7 @@ function ReportCreationForm(
                     </Form.Item>
                     <Form.Item 
                         name={'beds'} 
-                        label="beds" 
+                        label="Beds" 
                         required={true}
                         initialValue={bedroomCount}
                     >
@@ -320,7 +320,7 @@ function ReportCreationForm(
                     </Form.Item>
                     <Form.Item 
                         name={'bath'} 
-                        label="bath" 
+                        label="Bath" 
                         required={true}
                         initialValue={bathroomCount}
                     >
@@ -328,7 +328,7 @@ function ReportCreationForm(
                     </Form.Item>
                     <Form.Item 
                         name={'yearBuiltValue'} 
-                        label="year built" 
+                        label="Year Built" 
                         required={true}
                         initialValue={yearBuilt}
                     >
