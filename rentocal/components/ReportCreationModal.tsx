@@ -241,8 +241,8 @@ function ReportCreationForm(
     }
 ): ReactNode {
     const layout = {
-        labelCol: { span: 4 },
-        wrapperCol: { span: 20 },
+        labelCol: { span: 8 },
+        wrapperCol: { span: 16 },
     };
     const {
         currentStep,
