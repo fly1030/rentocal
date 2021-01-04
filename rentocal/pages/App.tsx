@@ -56,7 +56,7 @@ const App = (props: Props) => {
   const setUniqueID = useSetRecoilState(uniqueIDState);
 
   const {propertyEntries, setNewEntries} = props;
-  let tempProperty = null;
+  let tempProperty: {[key: string]: any} | null = null;
   if (propertyEntries.length > 0) {
     tempProperty = propertyEntries[0];
   }
@@ -179,6 +179,8 @@ const App = (props: Props) => {
           isDeletionModalVisible={isDeletionModalVisible}
           setIsDeletionModalVisible={setIsDeletionModalVisible}
           propertyId={selectedProperty}
+          setNewEntries={setNewEntries}
+          deselectProperty={() => setSelectedProperty(tempProperty?.id ?? '')}
         />
     </Layout>
   );
