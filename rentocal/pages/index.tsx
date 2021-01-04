@@ -1,7 +1,7 @@
 import { gql } from "@apollo/client";
 import { getApolloClient } from "components/Utils/Utils";
 import { GetServerSideProps } from "next";
-import App from "pages/App";
+import App from "components/App";
 import React, { useEffect, useState } from "react";
 import { RecoilRoot } from "recoil";
 
