@@ -60,7 +60,7 @@ function ReportDeletionModal(props: Props) {
             }} 
             onCancel={() => {setIsDeletionModalVisible(false)}}
         >
-            <div>Delet report for {propertyId.replace(/-/g, ' ')}?</div>
+            <div>Delete report for {propertyId.replace(/-/g, ' ')}?</div>
         </Modal>
 
 	)
