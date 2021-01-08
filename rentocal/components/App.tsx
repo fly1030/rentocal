@@ -1,6 +1,6 @@
 import Router, { useRouter } from 'next/router';
-import { DeleteOutlined, PlusOutlined } from "@ant-design/icons";
-import { Button, Divider, Menu } from "antd";
+import { DeleteOutlined, ImportOutlined, PlusOutlined } from "@ant-design/icons";
+import { Button, Divider, Menu, Tooltip } from "antd";
 import Layout, { Content } from "antd/lib/layout/layout";
 import Sider from "antd/lib/layout/Sider";
 import HomepageHeader from "components/HomepageHeader";
@@ -29,6 +29,7 @@ import {
   yearBuiltState,
   uniqueIDState,
 } from "recoilAtoms";
+import ImportFromURLModal from './ImportFromURLModal';
 
 type Props = {
   propertyEntries: Array<{[key: string]: any}>,
@@ -59,7 +60,7 @@ const App = (props: Props) => {
   const {
     query: { id },
   } = useRouter();
-  
+
   let tempProperty: {[key: string]: any} | null = null;
   if (propertyEntries.length > 0) {
     tempProperty = propertyEntries[0];
@@ -67,6 +68,7 @@ const App = (props: Props) => {
   const [selectedProperty, setSelectedProperty] = useState<string>(id ?? (tempProperty != null ? tempProperty.id : ''));
   const [isCreationModalVisible, setIsCreationModalVisible] = useState<boolean>(false);
   const [isDeletionModalVisible, setIsDeletionModalVisible] = useState<boolean>(false);
+  const [isImportModalVisible, setIsImportModalVisible] = useState<boolean>(false);
 
   useEffect(() => {
     if (selectedProperty == null) {
@@ -139,15 +141,27 @@ const App = (props: Props) => {
                       })
                       }
                     }
-                >
-                  <Button 
-                    style={{width: '94%', marginLeft: 8, marginTop: 20}}
-                    type="primary"
-                    icon={<PlusOutlined />}
-                    onClick={() => setIsCreationModalVisible(true)}
-                  >
-                    Create New Report
-                  </Button>
+                > 
+                  <div style={{display: 'flex'}}>
+                    <Button 
+                      style={{width: '80%', marginLeft: 8, marginTop: 20}}
+                      type="primary"
+                      icon={<PlusOutlined />}
+                      onClick={() => setIsCreationModalVisible(true)}
+                    >
+                      Create New Report
+                    </Button>
+                    <Tooltip title="Import from URL">
+                      <Button 
+                        style={{width: '10%', marginLeft: 8, marginTop: 20}}
+                        type="primary"
+                        icon={<ImportOutlined />}
+                        onClick={() => {
+                          setIsImportModalVisible(true);
+                        }}
+                      />
+                    </Tooltip>
+                  </div>
                   <Divider />
                   {propertyEntries.map((property) => {
                     return <Menu.Item key={property.id}>
@@ -189,6 +203,10 @@ const App = (props: Props) => {
           propertyId={selectedProperty}
           setNewEntries={setNewEntries}
           deselectProperty={() => setSelectedProperty(tempProperty?.id ?? '')}
+        />
+        <ImportFromURLModal
+          isImportModalVisible = {isImportModalVisible}
+          setIsImportModalVisible = {setIsImportModalVisible}
         />
     </Layout>
   );
