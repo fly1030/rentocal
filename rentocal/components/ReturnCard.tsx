@@ -19,9 +19,9 @@ function ReturnCard(props: Props) {
                         onChange={(value: number) => {
                             setMonthlyRent(value);
                         }}
-                        max={10000}
+                        max={5000}
                         min={100}
-                        step = {100}
+                        step = {50}
                     />
                     <ReturnTable />
                 </Col>

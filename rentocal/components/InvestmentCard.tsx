@@ -1,4 +1,4 @@
-import { Slider } from 'antd';
+import { InputNumber, Slider } from 'antd';
 import React from 'react';
 import { useRecoilState } from 'recoil';
 import { 
@@ -30,18 +30,30 @@ function InvestmentCard() {
     const [hoaFee, setHoaFee] = useRecoilState(hoaFeeState);
     const [capitalExpRate, setCapitalExpRate] = useRecoilState(capitalExpRateState);
 
+    /*
+        <Slider 
+            value={purchasePrice} 
+            onChange={(value: number) => {
+                setPurchasePrice(value);
+            }}
+            max={2000000}
+            min={0}
+            step = {1000}
+        />
+    */
 	return (
         <div>
             <div>Purchase Price: ${purchasePrice}</div>
-            <Slider 
-                value={purchasePrice} 
+            <InputNumber
+                style={{width: '50%'}}
+                value={purchasePrice}
+                min={0} 
+                max={2000000}
+                step = {1000}
+                defaultValue={0} 
                 onChange={(value: number) => {
                     setPurchasePrice(value);
-                }}
-                max={10000000}
-                min={0}
-                step = {1000}
-            />
+                }}            />
             <div style={{paddingTop: 20}}>Down Payment: {downPercentage}%</div>
             <Slider 
                 value={downPercentage} 
@@ -88,7 +100,7 @@ function InvestmentCard() {
                 onChange={(value: number) => {
                     setVacancyRate(value);
                 }}
-                max={100}
+                max={40}
                 min={0}
                 step = {5}
             />
@@ -118,9 +130,9 @@ function InvestmentCard() {
                 onChange={(value: number) => {
                     setMonthlyTax(value);
                 }}
-                max={50000}
+                max={2000}
                 min={0}
-                step = {1}
+                step = {10}
             />
             <div style={{paddingTop: 20}}>Monthly Insurance: ${monthlyInsruance}</div>
             <Slider 
@@ -128,9 +140,9 @@ function InvestmentCard() {
                 onChange={(value: number) => {
                     setMonthlyInsurance(value);
                 }}
-                max={5000}
+                max={2000}
                 min={0}
-                step = {1}
+                step = {10}
             />
             <div style={{paddingTop: 20}}>HOA Fee: ${hoaFee}</div>
             <Slider 
@@ -140,7 +152,7 @@ function InvestmentCard() {
                 }}
                 max={1000}
                 min={0}
-                step = {1}
+                step = {10}
             />
             <div style={{paddingTop: 20}}>Capital Expenditures: {capitalExpRate}%</div>
             <Slider 
