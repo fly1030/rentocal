@@ -18,7 +18,12 @@ function ImportFromURLModal(props: Props) {
         <Modal 
             title="Import from URL" 
             visible={isImportModalVisible} 
-            onOk={() => {setIsImportModalVisible(false)}} 
+            onOk={() => {
+                if (importURL.length > 0) {
+                    getDataFromURL(importURL);
+                }
+                setIsImportModalVisible(false);
+            }} 
             onCancel={() => {setIsImportModalVisible(false)}}
         >
             <div style={{display: 'flex'}}>
@@ -29,8 +34,30 @@ function ImportFromURLModal(props: Props) {
                 />
             </div>
         </Modal>
+	);
+}
 
-	)
+async function getDataFromURL(url: string) {
+    let xmlhttp = null;
+    if (window.XMLHttpRequest)
+    {
+        xmlhttp = new XMLHttpRequest();
+    }
+    if (xmlhttp == null) {
+        return;
+    }
+    xmlhttp.onreadystatechange = function() {
+        if (this.readyState === 4 && this.status === 200) {
+            console.log('this.response: ', this.responseText);
+            let response = JSON.parse(this.responseText);
+            console.log('response: ', response);
+        }
+    }
+
+    xmlhttp.setRequestHeader("Accept", 'application/json');
+    // xmlhttp.setRequestHeader("Origin", 'connectmls.com');
+    xmlhttp.setRequestHeader('Access-Control-Allow-Headers', '*');
+    xmlhttp.send();
 }
 
 export default ImportFromURLModal;
