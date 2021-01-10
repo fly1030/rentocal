@@ -365,7 +365,7 @@ function ReportCreationForm(
                             required={true}
                             initialValue={purchasePrice}
                         >
-                            <Input />
+                            <InputNumber style={{width: '100%'}} />
                         </Form.Item>
                         <Form.Item 
                             name={'downpayment'} 
@@ -373,7 +373,7 @@ function ReportCreationForm(
                             required={true}
                             initialValue={downPercentage}
                         >
-                            <Input />
+                            <InputNumber style={{width: '100%'}} />
                         </Form.Item>
                         <Form.Item 
                             name={'interest'} 
@@ -381,7 +381,7 @@ function ReportCreationForm(
                             required={true}
                             initialValue={interestRate}
                         >
-                            <Input />
+                            <InputNumber style={{width: '100%'}} step={0.125} />
                         </Form.Item>
                         <Form.Item 
                             name={'closingCost'} 
@@ -389,7 +389,7 @@ function ReportCreationForm(
                             required={true}
                             initialValue={closingCost}
                         >
-                            <Input />
+                            <InputNumber style={{width: '100%'}} step={0.5} />
                         </Form.Item>
                         <Form.Item 
                             name={'immediateCost'} 
@@ -397,7 +397,7 @@ function ReportCreationForm(
                             required={true}
                             initialValue={immediateCost}
                         >
-                            <Input />
+                            <InputNumber style={{width: '100%'}} />
                         </Form.Item>
                     </Form>
                 );
@@ -448,7 +448,7 @@ function ReportCreationForm(
                             required={true}
                             initialValue={monthlyRent}
                         >
-                            <Input />
+                            <InputNumber style={{width: '100%'}} />
                         </Form.Item>
                         <Form.Item 
                             name={'vacancy'} 
@@ -456,7 +456,7 @@ function ReportCreationForm(
                             required={true}
                             initialValue={vacancyRate}
                         >
-                            <Input />
+                            <InputNumber style={{width: '100%'}} />
                         </Form.Item>
                         <Form.Item 
                             name={'management'} 
@@ -464,7 +464,7 @@ function ReportCreationForm(
                             required={true}
                             initialValue={managementRate}
                         >
-                            <Input />
+                            <InputNumber style={{width: '100%'}} />
                         </Form.Item>
                         <Form.Item 
                             name={'repairReserve'} 
@@ -472,7 +472,7 @@ function ReportCreationForm(
                             required={true}
                             initialValue={repairReserve}
                         >
-                            <Input />
+                            <InputNumber style={{width: '100%'}} />
                         </Form.Item>
                         <Form.Item 
                             name={'tax'} 
@@ -480,7 +480,7 @@ function ReportCreationForm(
                             required={true}
                             initialValue={monthlyTax}
                         >
-                            <Input />
+                            <InputNumber style={{width: '100%'}} />
                         </Form.Item>
                         <Form.Item 
                             name={'insurance'} 
@@ -488,7 +488,7 @@ function ReportCreationForm(
                             required={true}
                             initialValue={monthlyInsurance}
                         >
-                            <Input />
+                            <InputNumber style={{width: '100%'}} />
                         </Form.Item>
                         <Form.Item 
                             name={'hoa'} 
@@ -496,7 +496,7 @@ function ReportCreationForm(
                             required={true}
                             initialValue={hoaFee}
                         >
-                            <Input />
+                            <InputNumber style={{width: '100%'}} />
                         </Form.Item>
                         <Form.Item 
                             name={'capitalExp'} 

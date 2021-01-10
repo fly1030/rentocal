@@ -1,5 +1,6 @@
 import { Input, Modal } from 'antd';
 import React, { useState } from 'react';
+import { parseImportResponse } from './Utils/Utils';
 
 type Props = {
     isImportModalVisible: boolean,
@@ -49,11 +50,10 @@ async function getDataFromURL(url: string) {
     xmlhttp.onreadystatechange = function() {
         if (this.readyState === 4 && this.status === 200) {
             console.log('this.response: ', this.responseText);
-            let response = JSON.parse(this.responseText);
-            console.log('response: ', response);
+            parseImportResponse(url, this.responseText);
         }
     }
-
+    xmlhttp.open("GET", `https://cors-anywhere.herokuapp.com/${url}`, true);
     xmlhttp.setRequestHeader("Accept", 'application/json');
     // xmlhttp.setRequestHeader("Origin", 'connectmls.com');
     xmlhttp.setRequestHeader('Access-Control-Allow-Headers', '*');

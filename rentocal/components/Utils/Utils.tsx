@@ -1,4 +1,6 @@
 import { ApolloClient, InMemoryCache } from "@apollo/client";
+import { Constants } from "./Constants";
+const { ImportDomains } = Constants;
 
 export function getApolloClient() {
     return new ApolloClient({
@@ -160,4 +162,30 @@ export function getGrossYield(
 ): string {
     const grossIncome = 12 * monthlyRent;
     return `${(grossIncome * 100 / purchasePrice).toFixed(1)}%`;
+}
+
+export function parseImportResponse(
+    importURL: string,
+    responseText: string,
+): {[key: string]: any} {
+    switch(importURL) {
+        case ImportDomains.ZILLOW:
+        case ImportDomains.MLSMATRIX:
+            getParamsFromMLSURL(responseText);
+        default:
+            getParamsFromMLSURL(responseText);
+            return {};
+    }
+    return {};
+}
+
+function getParamsFromMLSURL(
+    responseText: string,
+): {[key: string]: any} {
+    const textArray = responseText.split(/\n/);
+    console.log('textArray: ', textArray);
+    const propertiesAddress = textArray.filter(row => row.includes('/matrix/Images/DisplayIcons/GreenDot.png'));
+    console.log('propertiesAddress: ', propertiesAddress);
+    // const propertyNames = responseText.filter('col-sm-12 d-fontSize--largest d-text d-color--brandDark');
+    return {};
 }
