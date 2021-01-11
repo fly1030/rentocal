@@ -1,5 +1,5 @@
 import { ApolloClient, InMemoryCache } from "@apollo/client";
-import { Constants } from "./Constants";
+import { Constants, monthList } from "./Constants";
 const { ImportDomains } = Constants;
 
 export function getApolloClient() {
@@ -205,4 +205,22 @@ export function sortByCreationTime(a: {[key: string]: any}, b: {[key: string]: a
     } else {
         return 0;
     }
+}
+
+export function propertiesByCreationTime(
+    properties: Array<{[key: string]: any}>
+): {[key: string]: Array<{[key: string]: any}>} {
+    const result: {[key: string]: Array<{[key: string]: any}>} = {};
+    properties.forEach(property => {
+        const creationTime = property.creation_time;
+        const date = new Date(creationTime * 1000);
+        const monthString = monthList[date.getMonth()];
+        const dateString = `${monthString} ${date.getDate()} ${date.getFullYear()}`;
+        if (Object.keys(result).includes(dateString)) {
+            result[dateString].push(property);
+            return;
+        }
+        result[dateString] = [property];
+    });
+    return result;
 }

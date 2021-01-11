@@ -30,7 +30,8 @@ import {
   uniqueIDState,
 } from "recoilAtoms";
 import ImportFromURLModal from './ImportFromURLModal';
-import { sortByCreationTime } from './Utils/Utils';
+import { propertiesByCreationTime, sortByCreationTime } from './Utils/Utils';
+const {ItemGroup} = Menu;
 
 type Props = {
   propertyEntries: Array<{[key: string]: any}>,
@@ -124,6 +125,7 @@ const App = (props: Props) => {
   }, [selectedProperty]);
 
   const sortedPropertyEntries = propertyEntries.slice().sort(sortByCreationTime);
+  const propertyEntiresByCreaitonTime = propertiesByCreationTime(sortedPropertyEntries);
 
   return (
     <Layout style={{height: 1600}}>
@@ -166,28 +168,41 @@ const App = (props: Props) => {
                     </Tooltip>
                   </div>
                   <Divider />
-                  {sortedPropertyEntries.map((property) => {
-                    return <Menu.Item key={property.id}>
-                      <div style={{display: 'flex'}}>
-                        <div style={{
-                          width: 240,
-                          whiteSpace: 'nowrap',
-                          overflow: 'hidden',
-                          textOverflow: 'ellipsis',
-                        }}>{property.id}</div>
-                        <div 
-                          style={{
-                            marginLeft: 10
-                          }}
-                          onClick = {() => {
-                            setIsDeletionModalVisible(true);
-                          }}
-                        >
-                          <DeleteOutlined />
-                        </div>
-                      </div>
-                    </Menu.Item>
-                  })}
+                  {
+                    Object.keys(propertyEntiresByCreaitonTime).map((date) => {
+                      const propertyEntriesOnDate = propertyEntiresByCreaitonTime[date];
+                      return (
+                        <ItemGroup title={date}>
+                          {
+                            propertyEntriesOnDate.map((property) => {
+                              return (
+                                <Menu.Item key={property.id}>
+                                  <div style={{display: 'flex'}}>
+                                    <div style={{
+                                      width: 240,
+                                      whiteSpace: 'nowrap',
+                                      overflow: 'hidden',
+                                      textOverflow: 'ellipsis',
+                                    }}>{property.id}</div>
+                                    <div 
+                                      style={{
+                                        marginLeft: 10
+                                      }}
+                                      onClick = {() => {
+                                        setIsDeletionModalVisible(true);
+                                      }}
+                                    >
+                                      <DeleteOutlined />
+                                    </div>
+                                  </div>
+                                </Menu.Item>
+                              );
+                            })
+                          }
+                        </ItemGroup>
+                      );
+                    })
+                  }
                 </Menu>
             </Sider>
             <Content>
