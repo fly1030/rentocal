@@ -30,6 +30,7 @@ import {
   uniqueIDState,
 } from "recoilAtoms";
 import ImportFromURLModal from './ImportFromURLModal';
+import { sortByCreationTime } from './Utils/Utils';
 
 type Props = {
   propertyEntries: Array<{[key: string]: any}>,
@@ -122,6 +123,8 @@ const App = (props: Props) => {
     setUniqueID(unique_id);
   }, [selectedProperty]);
 
+  const sortedPropertyEntries = propertyEntries.slice().sort(sortByCreationTime);
+
   return (
     <Layout style={{height: 1600}}>
         <HomepageHeader />
@@ -163,7 +166,7 @@ const App = (props: Props) => {
                     </Tooltip>
                   </div>
                   <Divider />
-                  {propertyEntries.map((property) => {
+                  {sortedPropertyEntries.map((property) => {
                     return <Menu.Item key={property.id}>
                       <div style={{display: 'flex'}}>
                         <div style={{

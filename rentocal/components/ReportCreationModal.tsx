@@ -135,9 +135,26 @@ function ReportCreationModal(props: Props) {
                     year_built: Number(yearBuilt),
                     creation_time: Number(creation_time),
                 };
-                console.log('queryVariable: ', queryVariable);
                 createProperty({ variables: queryVariable});
                 setIsCreationModalVisible(false);
+                setCurrentStep(0);
+                setPropertyAddress('');
+                setBedroomCount(0);
+                setBathroomCount(0);
+                setYearBuilt(2021);
+                setPurchasePrice(0);
+                setDownPercentage(25);
+                setInterestRate(3.0);
+                setImmediateCost(0);
+                setClosingCost(1.5);
+                setMonthlyRent(0);
+                setVacancyRate(5);
+                setManagementRate(6);
+                setRepairReserve(5);
+                setMonthlyTax(0);
+                setMonthlyInsurance(0);
+                setHoaFee(0);
+                setCapitalExp(5);
             }} 
             onCancel={() => {setIsCreationModalVisible(false)}}
             okButtonProps={{disabled: currentStep < 3}}

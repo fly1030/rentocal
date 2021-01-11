@@ -26,6 +26,7 @@ query {
     capital_exp_rate
     year_built
     unique_id
+    creation_time
   }
 }
 `;

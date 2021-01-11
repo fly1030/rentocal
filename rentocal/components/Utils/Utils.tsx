@@ -189,3 +189,20 @@ function getParamsFromMLSURL(
     // const propertyNames = responseText.filter('col-sm-12 d-fontSize--largest d-text d-color--brandDark');
     return {};
 }
+
+export function sortByCreationTime(a: {[key: string]: any}, b: {[key: string]: any}) {
+    const timestampA = a.creation_time;
+    const timestampB = b.creation_time;
+    if (timestampA == null || timestampB == null) {
+        return 0;
+    }
+
+    if (timestampA < timestampB) {
+        return 1;
+    }
+    else if (timestampA > timestampB) {
+        return -1;
+    } else {
+        return 0;
+    }
+}
