@@ -38,7 +38,8 @@ const CREATE_PROERTY = gql`
         $reserve_rate: Float!,
         $unique_id: String!,
         $vacancy_rate: Float!,
-        $year_built: String!,
+        $year_built: Int!,
+        $creation_time: Int!,
     ) {
         createProperty(
             bathroom_count: $bathroom_count,
@@ -59,6 +60,7 @@ const CREATE_PROERTY = gql`
             unique_id: $unique_id,
             vacancy_rate: $vacancy_rate,
             year_built: $year_built,
+            creation_time: $creation_time,
         ) {
             unique_id
         }
@@ -70,7 +72,7 @@ function ReportCreationModal(props: Props) {
     const [propertyAddress, setPropertyAddress] = useState<string>('');
     const [bedroomCount, setBedroomCount] = useState<number>(0);
     const [bathroomCount, setBathroomCount] = useState<number>(0);
-    const [yearBuilt, setYearBuilt] = useState<string>("2021");
+    const [yearBuilt, setYearBuilt] = useState<number>(2021);
     const [purchasePrice, setPurchasePrice] = useState<number>(0);
     const [downPercentage, setDownPercentage] = useState<number>(25);
     const [interestRate, setInterestRate] = useState<number>(3.0);
@@ -111,30 +113,30 @@ function ReportCreationModal(props: Props) {
             visible={isCreationModalVisible} 
             onOk={() => {
                 const propertyID = propertyAddress.replace(/,/g, '').replace(/ /g, '-');
-                createProperty(
-                    { variables: 
-                        { 
-                            bathroom_count: Number(bathroomCount),
-                            bedroom_count: Number(bedroomCount),
-                            capital_exp_rate: Number(capitalExp),
-                            closing_cost: Number(closingCost),
-                            down_percentage: Number(downPercentage),
-                            hoa_fee: Number(hoaFee),
-                            id: propertyID,
-                            immediate_cost: Number(immediateCost),
-                            interest_rate: Number(interestRate),
-                            management_rate: Number(managementRate),
-                            monthly_insurance: Number(monthlyInsurance),
-                            monthly_rent: Number(monthlyRent),
-                            monthly_tax: Number(monthlyTax),
-                            price: Number(purchasePrice),
-                            reserve_rate: Number(repairReserve),
-                            unique_id: propertyID,
-                            vacancy_rate: Number(vacancyRate),
-                            year_built: yearBuilt,
-                        } 
-                    }
-                );
+                const creation_time = Math.floor((new Date().getTime()) / 1000);
+                const queryVariable = { 
+                    bathroom_count: Number(bathroomCount),
+                    bedroom_count: Number(bedroomCount),
+                    capital_exp_rate: Number(capitalExp),
+                    closing_cost: Number(closingCost),
+                    down_percentage: Number(downPercentage),
+                    hoa_fee: Number(hoaFee),
+                    id: propertyID,
+                    immediate_cost: Number(immediateCost),
+                    interest_rate: Number(interestRate),
+                    management_rate: Number(managementRate),
+                    monthly_insurance: Number(monthlyInsurance),
+                    monthly_rent: Number(monthlyRent),
+                    monthly_tax: Number(monthlyTax),
+                    price: Number(purchasePrice),
+                    reserve_rate: Number(repairReserve),
+                    unique_id: propertyID,
+                    vacancy_rate: Number(vacancyRate),
+                    year_built: Number(yearBuilt),
+                    creation_time: Number(creation_time),
+                };
+                console.log('queryVariable: ', queryVariable);
+                createProperty({ variables: queryVariable});
                 setIsCreationModalVisible(false);
             }} 
             onCancel={() => {setIsCreationModalVisible(false)}}
@@ -207,7 +209,7 @@ function ReportCreationForm(
         setPropertyAddress: (value: string) => void,
         setBedroomCount: (value: number) => void,
         setBathroomCount: (value: number) => void,
-        setYearBuilt: (value: string) => void,
+        setYearBuilt: (value: number) => void,
         setPurchasePrice: (value: number) => void,
         setDownPercentage: (value: number) => void,
         setInterestRate: (value: number) => void,
@@ -224,7 +226,7 @@ function ReportCreationForm(
         propertyAddress: string,
         bedroomCount: number,
         bathroomCount: number,
-        yearBuilt: string,
+        yearBuilt: number,
         purchasePrice: number,
         downPercentage: number,
         interestRate: number,
@@ -316,7 +318,7 @@ function ReportCreationForm(
                         required={true}
                         initialValue={bedroomCount}
                     >
-                        <InputNumber />
+                        <InputNumber style={{width: '100%'}} />
                     </Form.Item>
                     <Form.Item 
                         name={'bath'} 
@@ -324,7 +326,7 @@ function ReportCreationForm(
                         required={true}
                         initialValue={bathroomCount}
                     >
-                        <InputNumber />
+                        <InputNumber style={{width: '100%'}} />
                     </Form.Item>
                     <Form.Item 
                         name={'yearBuiltValue'} 
@@ -332,7 +334,7 @@ function ReportCreationForm(
                         required={true}
                         initialValue={yearBuilt}
                     >
-                        <Input />
+                        <InputNumber style={{width: '100%'}} />
                     </Form.Item>
                 </Form>
             );
