@@ -31,9 +31,10 @@ export function getMortgageAmountAfterNMonths(
     const monthlyPayment = getMontlyMortgage(principle, interestRate);
     // N = (1 + r) ^ n * P - (((1 + r) ^ n - 1) / r) * c
     const P = principle;
-    const r = interestRate;
+    const r = interestRate / 12.0;
     const c = monthlyPayment;
-    const mortgageAmount = Math.pow((1 + r), n) * P - ((Math.pow((1 + r), n) - 1) / r) * c;
+    const interimResult = Math.pow((1 + r), n);
+    const mortgageAmount = interimResult * P - ((interimResult - 1) / r) * c;
     console.log('mortgageAmount: ', mortgageAmount);
     return mortgageAmount;
 }

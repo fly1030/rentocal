@@ -1,7 +1,8 @@
-import { Col, Divider, Row, Slider } from 'antd';
+import { Col, Divider, Row, Slider, Space } from 'antd';
 import React from 'react';
 import { useRecoilState } from 'recoil';
 import { monthlyRentState } from 'recoilAtoms';
+import ReturnChart from './ReturnChart';
 import ReturnTable from './ReturnTable';
 
 type Props = {};
@@ -24,8 +25,7 @@ function ReturnCard(props: Props) {
                         step = {50}
                     />
                     <ReturnTable />
-                    <Divider />
-                    <ReturnCard />
+                    <ReturnChart />
                 </Col>
             </Row>
         </div>

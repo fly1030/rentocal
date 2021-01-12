@@ -149,7 +149,7 @@ function PropertySection() {
             </Row>
             <Divider />
             <Row>
-                <Col span={8}>
+                <Col span={6}>
                     <Card 
                         title="Investment"
                         extra={
@@ -186,7 +186,7 @@ function PropertySection() {
                         <InvestmentCard />
                     </Card>
                 </Col>
-                <Col span={16}>
+                <Col span={18}>
                     <Card title="Return" style={{marginLeft: 20}}>
                             <ReturnCard />
                     </Card>
