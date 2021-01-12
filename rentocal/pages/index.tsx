@@ -4,6 +4,8 @@ import { GetServerSideProps } from "next";
 import App from "components/App";
 import React, { useEffect, useState } from "react";
 import { RecoilRoot } from "recoil";
+import * as Sentry from "@sentry/react";
+import { Integrations } from "@sentry/tracing";
 
 const GET_PROPERTIES = gql`
 query {
@@ -49,6 +51,20 @@ const Home = (props: Props) => {
   const {propertyEntries} = props;
   const [newEntries, setNewEntries] = useState<number>(0);
   const [propertyEntriesState, setPropertyEntiresState] = useState<Array<{[key: string]: any}>>(propertyEntries);
+
+  useEffect(() => {
+    Sentry.init({
+      dsn: "https://22f57bd93a614b46929cf3435d08daad@o503474.ingest.sentry.io/5588661",
+      autoSessionTracking: true,
+      integrations: [
+        new Integrations.BrowserTracing(),
+      ],
+    
+      // We recommend adjusting this value in production, or using tracesSampler
+      // for finer control
+      tracesSampleRate: 1.0,
+    });
+  }, []);
  
   useEffect(() => {
     async function getNewProperties() {
