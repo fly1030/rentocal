@@ -81,7 +81,7 @@ const App = (props: Props) => {
     });
 
     if (selectedPropertyInfo.length < 1) {
-      throw new Error;
+      window.location.href = window.location.origin;
     }
     const targetProperty = selectedPropertyInfo[0];
     const {
