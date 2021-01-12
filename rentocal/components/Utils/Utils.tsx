@@ -23,6 +23,21 @@ export function getMontlyMortgage(
     return Math.floor(monthly);
 }
 
+export function getMortgageAmountAfterNMonths(
+    n: number, 
+    principle: number, 
+    interestRate: number,
+): number {
+    const monthlyPayment = getMontlyMortgage(principle, interestRate);
+    // N = (1 + r) ^ n * P - (((1 + r) ^ n - 1) / r) * c
+    const P = principle;
+    const r = interestRate;
+    const c = monthlyPayment;
+    const mortgageAmount = Math.pow((1 + r), n) * P - ((Math.pow((1 + r), n) - 1) / r) * c;
+    console.log('mortgageAmount: ', mortgageAmount);
+    return mortgageAmount;
+}
+
 export function getMontlyNetOperationExpense(
     vacancyFactor: number,
     monthlyTax: number,
