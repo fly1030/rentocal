@@ -9,6 +9,7 @@ import {
 } from 'recoilAtoms';
 import { PriceAppreciationRate } from './Utils/Constants';
 import { getMortgageAmountAfterNMonths } from './Utils/Utils';
+import {Line} from 'react-chartjs-2';
 
 function ReturnChart() {
     const purchasePrice = useRecoilValue(purchasePriceState);
@@ -81,13 +82,65 @@ function ReturnChart() {
             year20_mortgage: `$${equityYear20}K`,
             year30_mortgage: `$${equityYear30}K`,
         },
-      ];
+    ];
 
+    const chartData = {
+        labels: ["year1", "year2", "year3", "year5", "year10", "year15", "year20", "year30"],
+        datasets: [
+            {
+                label: "mortgage amount",
+                borderColor: '#ED553B',
+                fill: false,
+                data: [
+                    mortgageAmountAfterYear1 * 1000, 
+                    mortgageAmountAfterYear2 * 1000,
+                    mortgageAmountAfterYear3 * 1000,
+                    mortgageAmountAfterYear5 * 1000,
+                    mortgageAmountAfterYear10 * 1000,
+                    mortgageAmountAfterYear15 * 1000,
+                    mortgageAmountAfterYear20 * 1000,
+                    mortgageAmountAfterYear30 * 1000,
+                ],
+            },
+            {
+                label: "property value",
+                borderColor: '#20639B',
+                fill: false,
+                data: [
+                    propertyValueAfterYear1 * 1000, 
+                    propertyValueAfterYear2 * 1000,
+                    propertyValueAfterYear3 * 1000,
+                    propertyValueAfterYear5 * 1000,
+                    propertyValueAfterYear10 * 1000,
+                    propertyValueAfterYear15 * 1000,
+                    propertyValueAfterYear20 * 1000,
+                    propertyValueAfterYear30 * 1000,
+                ],
+            },
+            {
+                label: "equity",
+                borderColor: '#3CAEA3',
+                fill: false,
+                data: [
+                    equityYear1 * 1000, 
+                    equityYear2 * 1000,
+                    equityYear3 * 1000,
+                    equityYear5 * 1000,
+                    equityYear10 * 1000,
+                    equityYear15 * 1000,
+                    equityYear20 * 1000,
+                    equityYear30 * 1000,
+                ],
+            }
+        ],
+      };
+       
 	return (
         <div style={{marginTop: 40}}>
             <Table
                 pagination={false}
                 dataSource={data}
+                style={{marginBottom: 40}}
             >
                 <Column title="Return Summary" dataIndex="title" key="title" />
                 <Column title="Year1" dataIndex="year1_mortgage" key="year1_mortgage" />
@@ -99,6 +152,10 @@ function ReturnChart() {
                 <Column title="Year20" dataIndex="year20_mortgage" key="year20_mortgage" />
                 <Column title="Year30" dataIndex="year30_mortgage" key="year30_mortgage" />
             </Table>
+            <Line
+                data={chartData}
+                options={{}}
+            />
         </div>
 	);
 }
