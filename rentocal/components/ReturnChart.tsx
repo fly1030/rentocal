@@ -88,7 +88,7 @@ function ReturnChart() {
         labels: ["year1", "year2", "year3", "year5", "year10", "year15", "year20", "year30"],
         datasets: [
             {
-                label: "mortgage amount",
+                label: "loan balance",
                 borderColor: '#ED553B',
                 fill: false,
                 data: [
