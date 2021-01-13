@@ -321,10 +321,10 @@ function ReportCreationForm(
                     name="property-form" 
                     onValuesChange={({address, link, beds, bath, yearBuiltValue}) => {
                         if (address != null) {
-                            setPropertyAddress(address);
+                            setPropertyAddress(address.trim());
                         }
                         if (link != null) {
-                            setPropertyLink(link);
+                            setPropertyLink(link.trim());
                         }
                         if (beds != null) {
                             setBedroomCount(beds);
@@ -340,7 +340,11 @@ function ReportCreationForm(
                     <Form.Item 
                         name={'address'} 
                         label="Address" 
-                        required={true}
+                        rules={[
+                            {required: true},
+                            {type: 'string'},
+                            {min: 1, message: 'Address cannot be empty'}
+                        ]}
                         initialValue={propertyAddress}
                     >
                         <Input />
@@ -348,7 +352,11 @@ function ReportCreationForm(
                     <Form.Item 
                         name={'link'} 
                         label="Link" 
-                        required={true}
+                        rules={[
+                            {required: true},
+                            {type: 'string'},
+                            {min: 1, message: 'Link cannot be empty'}
+                        ]}
                         initialValue={propertyLink}
                     >
                         <Input />
