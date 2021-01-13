@@ -7,8 +7,9 @@ import {
     bathroomCountState, 
     yearBuiltState,
     uniqueIDState,
+    propertyLinkState,
 } from 'recoilAtoms';
-import {EditOutlined} from '@ant-design/icons';
+import {EditOutlined, LinkOutlined} from '@ant-design/icons';
 import { gql, useMutation } from '@apollo/client';
 import { getApolloClient } from './Utils/Utils';
 
@@ -19,6 +20,7 @@ const UPDATE_PROPERTY_INFO = gql`
         $updated_bedroom_count: Int!,
         $updated_bathroom_count: Int!,
         $updated_year_built: String!,
+        $updated_link: String!,
     ) {
         updatePropertyInfo(
             orig_id: $orig_id,
@@ -26,6 +28,7 @@ const UPDATE_PROPERTY_INFO = gql`
             updated_bedroom_count: $updated_bedroom_count,
             updated_bathroom_count: $updated_bathroom_count,
             updated_year_built: $updated_year_built,
+            updated_link: $updated_link,
         ) {
             id
         }
@@ -37,6 +40,7 @@ function PropertyInfoCard() {
     const [bedroomCount, setBedroomCount] = useRecoilState(bedroomCountState);
     const [bathroomCount, setBathroomCount] = useRecoilState(bathroomCountState);
     const [yearBuilt, setYearBuilt] = useRecoilState(yearBuiltState);
+    const [propertyLink, setPropertyLink] = useRecoilState(propertyLinkState);
     const uniqueID = useRecoilValue(uniqueIDState);
     const [updatePropertyInfo] = useMutation(UPDATE_PROPERTY_INFO, {client: getApolloClient()});
     const [isPropertyInfoModalVisible, setIsPropertyInfoModalVisible] = useState<boolean>(false);
@@ -51,13 +55,23 @@ function PropertyInfoCard() {
             <Card 
                 title={propertyAddress.replace(/-/g, ' ')}
                 extra={
-                    <Button 
-                        type="primary" 
-                        icon={<EditOutlined />}
-                        onClick={() => {
-                            setIsPropertyInfoModalVisible(true);
-                        }}
-                    />
+                    <div style={{display: 'flex'}}>
+                        <Button
+                            style = {{marginRight: 8}} 
+                            type="primary" 
+                            icon={<LinkOutlined />}
+                            onClick={() => {
+                                window.open(propertyLink);
+                            }}
+                        />
+                        <Button 
+                            type="primary" 
+                            icon={<EditOutlined />}
+                            onClick={() => {
+                                setIsPropertyInfoModalVisible(true);
+                            }}
+                        />
+                    </div>
                 }
             >
                 <div style={{display: 'flex'}}>
@@ -90,6 +104,7 @@ function PropertyInfoCard() {
                                 updated_bedroom_count: bedroomCount,
                                 updated_bathroom_count: bathroomCount,
                                 updated_year_built: String(yearBuilt),
+                                updated_link: propertyLink,
                             } 
                         }
                     );
@@ -100,9 +115,12 @@ function PropertyInfoCard() {
                 <Form 
                     {...layout} 
                     name="property-info-form" 
-                    onValuesChange={({address, beds, bath, yearBuiltValue}) => {
+                    onValuesChange={({address, link, beds, bath, yearBuiltValue}) => {
                         if (address != null) {
                             setPropertyAddress(address);
+                        }
+                        if (link != null) {
+                            setPropertyLink(link);
                         }
                         if (beds != null) {
                             setBedroomCount(beds);
@@ -120,6 +138,14 @@ function PropertyInfoCard() {
                         label="Address" 
                         required={true}
                         initialValue={propertyAddress}
+                    >
+                        <Input />
+                    </Form.Item>
+                    <Form.Item 
+                        name={'link'} 
+                        label="Link" 
+                        required={true}
+                        initialValue={propertyLink}
                     >
                         <Input />
                     </Form.Item>

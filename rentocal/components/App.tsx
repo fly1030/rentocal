@@ -28,6 +28,7 @@ import {
   bedroomCountState,
   yearBuiltState,
   uniqueIDState,
+  propertyLinkState,
 } from "recoilAtoms";
 import ImportFromURLModal from './ImportFromURLModal';
 import { propertiesByCreationTime, sortByCreationTime } from './Utils/Utils';
@@ -57,6 +58,7 @@ const App = (props: Props) => {
   const setBathroomCount = useSetRecoilState(bathroomCountState);
   const setYearBuilt = useSetRecoilState(yearBuiltState);
   const setUniqueID = useSetRecoilState(uniqueIDState);
+  const setPropertyLink = useSetRecoilState(propertyLinkState);
 
   const {propertyEntries, setNewEntries} = props;
   const {
@@ -103,6 +105,7 @@ const App = (props: Props) => {
       capital_exp_rate,
       year_built,
       unique_id,
+      link,
     } = targetProperty;
     setPurchasePrice(price);
     setDownPercentage(down_percentage);
@@ -122,6 +125,7 @@ const App = (props: Props) => {
     setBathroomCount(bathroom_count);
     setYearBuilt(year_built);
     setUniqueID(unique_id);
+    setPropertyLink(link);
   }, [selectedProperty]);
 
   const sortedPropertyEntries = propertyEntries.slice().sort(sortByCreationTime);

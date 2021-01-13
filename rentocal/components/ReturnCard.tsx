@@ -1,4 +1,4 @@
-import { Col, Divider, Row, Slider, Space } from 'antd';
+import { Col, Row, Slider } from 'antd';
 import React from 'react';
 import { useRecoilState } from 'recoil';
 import { monthlyRentState } from 'recoilAtoms';

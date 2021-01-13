@@ -40,6 +40,7 @@ const CREATE_PROERTY = gql`
         $vacancy_rate: Float!,
         $year_built: Int!,
         $creation_time: Int!,
+        $link: String!,
     ) {
         createProperty(
             bathroom_count: $bathroom_count,
@@ -61,6 +62,7 @@ const CREATE_PROERTY = gql`
             vacancy_rate: $vacancy_rate,
             year_built: $year_built,
             creation_time: $creation_time,
+            link: $link,
         ) {
             unique_id
         }
@@ -86,6 +88,7 @@ function ReportCreationModal(props: Props) {
     const [monthlyInsurance, setMonthlyInsurance] = useState<number>(0);
     const [hoaFee, setHoaFee] = useState<number>(0);
     const [capitalExp, setCapitalExp] = useState<number>(5);
+    const [propertyLink, setPropertyLink] = useState<string>('');
     const {
         isCreationModalVisible, 
         setIsCreationModalVisible, 
@@ -114,6 +117,7 @@ function ReportCreationModal(props: Props) {
             onOk={() => {
                 const propertyID = propertyAddress.replace(/,/g, '').replace(/ /g, '-');
                 const creation_time = Math.floor((new Date().getTime()) / 1000);
+                console.log('input link: ', propertyLink);
                 const queryVariable = { 
                     bathroom_count: Number(bathroomCount),
                     bedroom_count: Number(bedroomCount),
@@ -134,6 +138,7 @@ function ReportCreationModal(props: Props) {
                     vacancy_rate: Number(vacancyRate),
                     year_built: Number(yearBuilt),
                     creation_time: Number(creation_time),
+                    link: propertyLink,
                 };
                 createProperty({ variables: queryVariable});
                 setIsCreationModalVisible(false);
@@ -155,6 +160,8 @@ function ReportCreationModal(props: Props) {
                 setMonthlyInsurance(0);
                 setHoaFee(0);
                 setCapitalExp(5);
+                setPropertyLink('');
+
             }} 
             onCancel={() => {setIsCreationModalVisible(false)}}
             okButtonProps={{disabled: currentStep < 3}}
@@ -191,6 +198,7 @@ function ReportCreationModal(props: Props) {
                             setMonthlyInsurance: setMonthlyInsurance,
                             setHoaFee: setHoaFee,
                             setCapitalExp: setCapitalExp,
+                            setPropertyLink: setPropertyLink,
                             propertyAddress: propertyAddress,
                             bedroomCount: bedroomCount,
                             bathroomCount: bathroomCount,
@@ -208,6 +216,7 @@ function ReportCreationModal(props: Props) {
                             monthlyInsurance: monthlyInsurance,
                             hoaFee: hoaFee,
                             capitalExp: capitalExp,
+                            propertyLink: propertyLink,
                     })
                 }
                 <StepButtonGroup
@@ -240,6 +249,7 @@ function ReportCreationForm(
         setMonthlyInsurance: (value: number) => void,
         setHoaFee: (value: number) => void,
         setCapitalExp: (value: number) => void,
+        setPropertyLink: (value: string) => void, 
         propertyAddress: string,
         bedroomCount: number,
         bathroomCount: number,
@@ -257,6 +267,7 @@ function ReportCreationForm(
         monthlyInsurance: number,
         hoaFee: number,
         capitalExp: number,
+        propertyLink: string,
     }
 ): ReactNode {
     const layout = {
@@ -282,6 +293,7 @@ function ReportCreationForm(
         setMonthlyInsurance,
         setHoaFee,
         setCapitalExp,
+        setPropertyLink,
         downPercentage,
         interestRate,
         closingCost,
@@ -299,6 +311,7 @@ function ReportCreationForm(
         monthlyInsurance,
         hoaFee,
         capitalExp,
+        propertyLink,
     } = props;
     switch (currentStep) {
         case 0:
@@ -306,9 +319,12 @@ function ReportCreationForm(
                 <Form 
                     {...layout} 
                     name="property-form" 
-                    onValuesChange={({address, beds, bath, yearBuiltValue}) => {
+                    onValuesChange={({address, link, beds, bath, yearBuiltValue}) => {
                         if (address != null) {
                             setPropertyAddress(address);
+                        }
+                        if (link != null) {
+                            setPropertyLink(link);
                         }
                         if (beds != null) {
                             setBedroomCount(beds);
@@ -326,6 +342,14 @@ function ReportCreationForm(
                         label="Address" 
                         required={true}
                         initialValue={propertyAddress}
+                    >
+                        <Input />
+                    </Form.Item>
+                    <Form.Item 
+                        name={'link'} 
+                        label="Link" 
+                        required={true}
+                        initialValue={propertyLink}
                     >
                         <Input />
                     </Form.Item>

@@ -29,6 +29,7 @@ query {
     year_built
     unique_id
     creation_time
+    link
   }
 }
 `;

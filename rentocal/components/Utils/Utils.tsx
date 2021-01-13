@@ -35,7 +35,6 @@ export function getMortgageAmountAfterNMonths(
     const c = monthlyPayment;
     const interimResult = Math.pow((1 + r), n);
     const mortgageAmount = interimResult * P - ((interimResult - 1) / r) * c;
-    console.log('mortgageAmount: ', mortgageAmount);
     return mortgageAmount;
 }
 

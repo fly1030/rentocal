@@ -89,3 +89,8 @@ export const uniqueIDState = atom({
     key: 'uniqueIDState',
     default: '',
 });
+
+export const propertyLinkState = atom({
+    key: 'propertyLinkState',
+    default: '',
+});
