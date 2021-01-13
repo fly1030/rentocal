@@ -115,9 +115,8 @@ function ReportCreationModal(props: Props) {
             title="Create Report" 
             visible={isCreationModalVisible} 
             onOk={() => {
-                const propertyID = propertyAddress.replace(/,/g, '').replace(/ /g, '-');
+                const propertyID = propertyAddress.replace(/\//g, ' ').replace(/,/g, ' ').replace(/\s+/g, '-');
                 const creation_time = Math.floor((new Date().getTime()) / 1000);
-                console.log('input link: ', propertyLink);
                 const queryVariable = { 
                     bathroom_count: Number(bathroomCount),
                     bedroom_count: Number(bedroomCount),
