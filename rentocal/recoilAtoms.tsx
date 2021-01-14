@@ -94,3 +94,13 @@ export const propertyLinkState = atom({
     key: 'propertyLinkState',
     default: '',
 });
+
+export const imageLinkState = atom({
+    key: 'imageLinkState',
+    default: '',
+});
+
+export const descriptionState = atom({
+    key: 'descriptionState',
+    default: '',
+});

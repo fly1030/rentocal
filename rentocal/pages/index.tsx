@@ -30,6 +30,8 @@ query {
     unique_id
     creation_time
     link
+    image_link
+    description
   }
 }
 `;

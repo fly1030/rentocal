@@ -1,5 +1,6 @@
 import { gql, useMutation } from '@apollo/client';
-import { Form, Input, InputNumber, Modal, Steps } from 'antd';
+import { Descriptions, Form, Input, InputNumber, Modal, Steps } from 'antd';
+import TextArea from 'antd/lib/input/TextArea';
 const { Step } = Steps;
 import React, { ReactNode, useState } from 'react';
 import StepButtonGroup from './StepButtonGroup';
@@ -41,6 +42,8 @@ const CREATE_PROERTY = gql`
         $year_built: Int!,
         $creation_time: Int!,
         $link: String!,
+        $image_link: String,
+        $description: String,
     ) {
         createProperty(
             bathroom_count: $bathroom_count,
@@ -63,6 +66,8 @@ const CREATE_PROERTY = gql`
             year_built: $year_built,
             creation_time: $creation_time,
             link: $link,
+            image_link: $image_link,
+            description: $description,
         ) {
             unique_id
         }
@@ -89,6 +94,8 @@ function ReportCreationModal(props: Props) {
     const [hoaFee, setHoaFee] = useState<number>(0);
     const [capitalExp, setCapitalExp] = useState<number>(5);
     const [propertyLink, setPropertyLink] = useState<string>('');
+    const [imageLink, setImageLink] = useState<string>('');
+    const [description, setDescription] = useState<string>('');
     const {
         isCreationModalVisible, 
         setIsCreationModalVisible, 
@@ -116,7 +123,7 @@ function ReportCreationModal(props: Props) {
             visible={isCreationModalVisible} 
             onOk={() => {
                 const propertyID = propertyAddress.replace(/\//g, ' ').replace(/,/g, ' ').replace(/\s+/g, '-');
-                const creation_time = Math.floor((new Date().getTime()) / 1000);
+                const creationTime = Math.floor((new Date().getTime()) / 1000);
                 const queryVariable = { 
                     bathroom_count: Number(bathroomCount),
                     bedroom_count: Number(bedroomCount),
@@ -136,8 +143,10 @@ function ReportCreationModal(props: Props) {
                     unique_id: propertyID,
                     vacancy_rate: Number(vacancyRate),
                     year_built: Number(yearBuilt),
-                    creation_time: Number(creation_time),
+                    creation_time: Number(creationTime),
                     link: propertyLink,
+                    image_link: imageLink,
+                    description: description,
                 };
                 createProperty({ variables: queryVariable});
                 setIsCreationModalVisible(false);
@@ -160,7 +169,8 @@ function ReportCreationModal(props: Props) {
                 setHoaFee(0);
                 setCapitalExp(5);
                 setPropertyLink('');
-
+                setImageLink('');
+                setDescription('');
             }} 
             onCancel={() => {setIsCreationModalVisible(false)}}
             okButtonProps={{disabled: currentStep < 3}}
@@ -198,6 +208,8 @@ function ReportCreationModal(props: Props) {
                             setHoaFee: setHoaFee,
                             setCapitalExp: setCapitalExp,
                             setPropertyLink: setPropertyLink,
+                            setImageLink: setImageLink,
+                            setDescription: setDescription,
                             propertyAddress: propertyAddress,
                             bedroomCount: bedroomCount,
                             bathroomCount: bathroomCount,
@@ -216,6 +228,8 @@ function ReportCreationModal(props: Props) {
                             hoaFee: hoaFee,
                             capitalExp: capitalExp,
                             propertyLink: propertyLink,
+                            imageLink: imageLink,
+                            description: description,
                     })
                 }
                 <StepButtonGroup
@@ -248,7 +262,9 @@ function ReportCreationForm(
         setMonthlyInsurance: (value: number) => void,
         setHoaFee: (value: number) => void,
         setCapitalExp: (value: number) => void,
-        setPropertyLink: (value: string) => void, 
+        setPropertyLink: (value: string) => void,
+        setImageLink: (value: string) => void,
+        setDescription: (value: string) => void,
         propertyAddress: string,
         bedroomCount: number,
         bathroomCount: number,
@@ -267,6 +283,8 @@ function ReportCreationForm(
         hoaFee: number,
         capitalExp: number,
         propertyLink: string,
+        imageLink: string,
+        description: string,
     }
 ): ReactNode {
     const layout = {
@@ -293,6 +311,8 @@ function ReportCreationForm(
         setHoaFee,
         setCapitalExp,
         setPropertyLink,
+        setImageLink,
+        setDescription,
         downPercentage,
         interestRate,
         closingCost,
@@ -311,6 +331,8 @@ function ReportCreationForm(
         hoaFee,
         capitalExp,
         propertyLink,
+        imageLink,
+        description,
     } = props;
     switch (currentStep) {
         case 0:
@@ -318,7 +340,7 @@ function ReportCreationForm(
                 <Form 
                     {...layout} 
                     name="property-form" 
-                    onValuesChange={({address, link, beds, bath, yearBuiltValue}) => {
+                    onValuesChange={({address, link, beds, bath, yearBuiltValue, image_link, description}) => {
                         if (address != null) {
                             setPropertyAddress(address.trim());
                         }
@@ -333,6 +355,12 @@ function ReportCreationForm(
                         }
                         if (yearBuiltValue != null) {
                             setYearBuilt(yearBuiltValue);
+                        }
+                        if (image_link != null) {
+                            setImageLink(image_link.trim());
+                        }
+                        if (description != null) {
+                            setDescription(description.trim());
                         }
                     }}
                 >
@@ -383,6 +411,30 @@ function ReportCreationForm(
                         initialValue={yearBuilt}
                     >
                         <InputNumber style={{width: '100%'}} />
+                    </Form.Item>
+                    <Form.Item 
+                        name={'image_link'} 
+                        label="Image Link" 
+                        rules={[
+                            {required: true},
+                            {type: 'string'},
+                            {min: 1, message: 'Link cannot be empty'}
+                        ]}
+                        initialValue={imageLink}
+                    >
+                        <Input />
+                    </Form.Item>
+                    <Form.Item 
+                        name={'description'} 
+                        label="Description" 
+                        rules={[
+                            {required: true},
+                            {type: 'string'},
+                            {min: 1, message: 'Link cannot be empty'}
+                        ]}
+                        initialValue={description}
+                    >
+                        <TextArea rows={4} />
                     </Form.Item>
                 </Form>
             );
