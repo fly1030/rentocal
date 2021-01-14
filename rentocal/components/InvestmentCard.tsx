@@ -30,17 +30,6 @@ function InvestmentCard() {
     const [hoaFee, setHoaFee] = useRecoilState(hoaFeeState);
     const [capitalExpRate, setCapitalExpRate] = useRecoilState(capitalExpRateState);
 
-    /*
-        <Slider 
-            value={purchasePrice} 
-            onChange={(value: number) => {
-                setPurchasePrice(value);
-            }}
-            max={2000000}
-            min={0}
-            step = {1000}
-        />
-    */
 	return (
         <div>
             <div>Purchase Price: ${purchasePrice}</div>

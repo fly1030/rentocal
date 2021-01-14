@@ -1,4 +1,5 @@
-import { ApolloClient, InMemoryCache } from "@apollo/client";
+import { ApolloClient, ApolloError, InMemoryCache } from "@apollo/client";
+import { message } from "antd";
 import { Constants, monthList } from "./Constants";
 const { ImportDomains } = Constants;
 
@@ -238,4 +239,18 @@ export function propertiesByCreationTime(
         result[dateString] = [property];
     });
     return result;
+}
+
+export const graphQLErrorHandler = ({networkError, graphQLErrors}: ApolloError) => {
+    if (graphQLErrors != null && graphQLErrors.length > 0) {
+        const error = graphQLErrors[0];
+        const errorMessage = error.message;
+        message.error(`Failed to create property: ${errorMessage}`, 15);
+        return;
+    }
+    if (networkError != null) {
+        const errorMessage = networkError.message;
+        message.error(`Failed to create property: ${errorMessage}`, 15);
+        return;
+    }
 }

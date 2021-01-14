@@ -1,10 +1,10 @@
 import { gql, useMutation } from '@apollo/client';
-import { Descriptions, Form, Input, InputNumber, Modal, Steps } from 'antd';
+import { Descriptions, Form, Input, InputNumber, message, Modal, Steps } from 'antd';
 import TextArea from 'antd/lib/input/TextArea';
 const { Step } = Steps;
 import React, { ReactNode, useState } from 'react';
 import StepButtonGroup from './StepButtonGroup';
-import { getApolloClient } from './Utils/Utils';
+import { getApolloClient, graphQLErrorHandler } from './Utils/Utils';
 
 type Props = {
     isCreationModalVisible: boolean,
@@ -40,7 +40,7 @@ const CREATE_PROERTY = gql`
         $unique_id: String!,
         $vacancy_rate: Float!,
         $year_built: Int!,
-        $creation_time: Int!,
+        $creation_time: String!,
         $link: String!,
         $image_link: String,
         $description: String,
@@ -111,10 +111,7 @@ function ReportCreationModal(props: Props) {
                 setNewEntries();
                 // setSelectedProperty(data.createProperty.unique_id);
             },
-            onError: ({networkError, graphQLErrors}) => {
-                console.log('graphQLErrors: ', graphQLErrors);
-                console.log('networkError: ', networkError);
-            }
+            onError: graphQLErrorHandler,
     });
 
 	return (

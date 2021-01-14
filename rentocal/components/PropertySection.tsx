@@ -22,7 +22,7 @@ import InvestmentCard from './InvestmentCard';
 import PropertyInfoCard from './PropertyInfoCard';
 import ResultInfoCard from './ResultInfoCard';
 import ReturnCard from './ReturnCard';
-import { getApolloClient, getCapRate, getCashOnCash, getGrossYield } from './Utils/Utils';
+import { getApolloClient, getCapRate, getCashOnCash, getGrossYield, graphQLErrorHandler } from './Utils/Utils';
 
 const UPDATE_INVESTMENT_INFO = gql`
     mutation UpdateInvestmentInfo(
@@ -78,7 +78,13 @@ function PropertySection() {
     const monthlyRent = useRecoilValue(monthlyRentState);
     const uniqueID = useRecoilValue(uniqueIDState);
 
-    const [updateInvestmentInfo] = useMutation(UPDATE_INVESTMENT_INFO, {client: getApolloClient()});
+    const [updateInvestmentInfo] = useMutation(
+        UPDATE_INVESTMENT_INFO, 
+        {
+            client: getApolloClient(),
+            onError: graphQLErrorHandler,
+        }
+    );
 
     const cashOnCash = getCashOnCash(
         purchasePrice,

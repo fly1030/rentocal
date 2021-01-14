@@ -13,7 +13,7 @@ import {
 } from 'recoilAtoms';
 import {EditOutlined, LinkOutlined} from '@ant-design/icons';
 import { gql, useMutation } from '@apollo/client';
-import { getApolloClient } from './Utils/Utils';
+import { getApolloClient, graphQLErrorHandler } from './Utils/Utils';
 import TextArea from 'antd/lib/input/TextArea';
 import { PropertyDescriptionPlaceholderText, PropertyImagePlaceholder } from './Utils/Constants';
 
@@ -52,8 +52,14 @@ function PropertyInfoCard() {
     const [imageLink, setImageLink] = useRecoilState(imageLinkState);
     const [description, setDescription] = useRecoilState(descriptionState);
     const uniqueID = useRecoilValue(uniqueIDState);
-    const [updatePropertyInfo] = useMutation(UPDATE_PROPERTY_INFO, {client: getApolloClient()});
     const [isPropertyInfoModalVisible, setIsPropertyInfoModalVisible] = useState<boolean>(false);
+    const [updatePropertyInfo] = useMutation(
+        UPDATE_PROPERTY_INFO, 
+        {
+            client: getApolloClient(),
+            onError: graphQLErrorHandler,
+        }
+    );
 
     const layout = {
         labelCol: { span: 4 },
