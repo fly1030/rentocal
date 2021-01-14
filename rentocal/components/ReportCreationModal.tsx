@@ -109,6 +109,7 @@ function ReportCreationModal(props: Props) {
             client: getApolloClient(),
             onCompleted: (data) => {
                 setNewEntries();
+                message.success(`New report has been created!`);
                 // setSelectedProperty(data.createProperty.unique_id);
             },
             onError: graphQLErrorHandler,

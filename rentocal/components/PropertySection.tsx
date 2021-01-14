@@ -1,5 +1,5 @@
 import { gql, useMutation } from '@apollo/client';
-import { Button, Card, Col, Divider, notification, Row } from 'antd'
+import { Button, Card, Col, Divider, message, notification, Row } from 'antd'
 import React from 'react';
 import { useRecoilValue } from 'recoil';
 import { 
@@ -83,6 +83,9 @@ function PropertySection() {
         {
             client: getApolloClient(),
             onError: graphQLErrorHandler,
+            onCompleted: (_data) => {
+                message.success(`Investment info has been saved successfully!`);
+            }
         }
     );
 

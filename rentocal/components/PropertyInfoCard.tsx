@@ -1,4 +1,4 @@
-import { Button, Card, Form, Input, InputNumber, Modal, Row, Col, Statistic, Image } from 'antd';
+import { Button, Card, Form, Input, InputNumber, Modal, Row, Col, Statistic, Image, message } from 'antd';
 import React, { useState } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { 
@@ -58,6 +58,9 @@ function PropertyInfoCard() {
         {
             client: getApolloClient(),
             onError: graphQLErrorHandler,
+            onCompleted: (_data) => {
+                message.success(`Property info has been updated successfully!`);
+            }
         }
     );
 
