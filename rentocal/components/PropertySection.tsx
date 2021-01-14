@@ -1,5 +1,5 @@
 import { gql, useMutation } from '@apollo/client';
-import { Button, Card, Col, Divider, message, notification, Row } from 'antd'
+import { Button, Card, Col, Divider, message, Row } from 'antd'
 import React from 'react';
 import { useRecoilValue } from 'recoil';
 import { 
@@ -121,12 +121,6 @@ function PropertySection() {
         purchasePrice,
         monthlyRent,
     );
-
-    const openNotification = () => {
-        notification.open({
-          message: 'Investment information updated!',
-        });
-    };
     
 	return (
 		<div style={{padding: 20}}>
@@ -185,7 +179,6 @@ function PropertySection() {
                                             } 
                                         }
                                     );
-                                    openNotification();
                                 }}
                             >
                                 Save
