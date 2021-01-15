@@ -184,10 +184,17 @@ export function parseImportResponse(
     importURL: string,
     responseText: string,
 ): {[key: string]: any} {
-    switch(importURL) {
+    const urlArray = importURL.split('/');
+    if (urlArray.length < 3) {
+        return {};
+    }
+    const domainName = urlArray[2];
+    switch(domainName) {
         case ImportDomains.ZILLOW:
+            return getParamsFromZillowURL(responseText);
         case ImportDomains.MLSMATRIX:
             getParamsFromMLSURL(responseText);
+            return {};
         default:
             getParamsFromMLSURL(responseText);
             return {};
@@ -204,6 +211,82 @@ function getParamsFromMLSURL(
     console.log('propertiesAddress: ', propertiesAddress);
     // const propertyNames = responseText.filter('col-sm-12 d-fontSize--largest d-text d-color--brandDark');
     return {};
+}
+
+function getParamsFromZillowURL(
+    responseText: string,
+): {[key: string]: any} {
+    const newDiv = document.createElement("div");
+    newDiv.setAttribute("id", "ImportZillowDiv");
+    newDiv.innerHTML = responseText;
+    newDiv.style.display = 'none';
+    document.body.appendChild(newDiv);
+    const address = document.querySelector("meta[property='og:zillow_fb:address']")?.getAttribute('content');
+    const bedroomCount = document.querySelector("meta[property='zillow_fb:beds']")?.getAttribute('content');
+    const bathroomCount = document.querySelector("meta[property='zillow_fb:baths']")?.getAttribute('content');
+    const description = document.querySelector("meta[property='zillow_fb:description']")?.getAttribute('content');
+    const link = document.querySelector("meta[property='og:url']")?.getAttribute('content');
+    const imageLink = document.querySelector("meta[property='og:image']")?.getAttribute('content');
+    const purchasePrice = document.querySelector("meta[property='product:price:amount']")?.getAttribute('content');
+
+    let rent = 0;
+    const rentEstimations = document.getElementsByClassName('bloUvX');
+    if (rentEstimations != null && rentEstimations.length > 0) {
+        for (let entry of rentEstimations) {
+            const entryText = entry.innerHTML;
+            if (entryText.includes('/mo')) {
+                const rentText = entryText.replace('<!-- -->/mo', '').replace('$', '').replace(',', '');
+                rent = Number(rentText);
+            }
+        }
+    }
+
+    const investmentInfo = document.getElementsByClassName('sc-pRtAn iEXtkb');
+
+    const investmentInfoArray = [];
+    if (investmentInfo != null && investmentInfo.length > 0) {
+        for (let entry of investmentInfo) {
+            const entryText = entry.innerHTML;
+            const entryTextProcessed = entryText.replace(/\<(.+?)\>/g, " ").trim();
+            investmentInfoArray.push(entryTextProcessed);
+        }
+    }
+
+    let monthlyTax = 0;
+    let montylyInsurance = 0;
+    let hoeFee = 0;
+    investmentInfoArray.forEach(entry => {
+        const [attributeName, atrributeValue] = entry.split("  ");
+        switch(attributeName) {
+            case 'Home insurance':
+                montylyInsurance = Number(atrributeValue.replace('/mo', '').replace('$', ''));
+                return;
+            case 'Property taxes':
+                monthlyTax = Number(atrributeValue.replace('/mo', '').replace('$', ''));
+                return;
+            case 'HOA fees':
+                hoeFee = Number(atrributeValue.replace('/mo', '').replace('$', ''));
+                return;
+            default:
+                return;
+        }
+    });
+    
+    const propertyParams = {
+        address,
+        bedroomCount,
+        bathroomCount,
+        description,
+        link,
+        imageLink,
+        purchasePrice,
+        rent,
+        monthlyTax,
+        montylyInsurance,
+        hoeFee,
+    };
+
+    return propertyParams;
 }
 
 export function sortByCreationTime(a: {[key: string]: any}, b: {[key: string]: any}) {

@@ -1,6 +1,6 @@
 export const Constants = {
 	ImportDomains: {
-        ZILLOW: 'zillow.com',
+        ZILLOW: 'www.zillow.com',
         MLSMATRIX: 'matrix.fmlsd.mlsmatrix.com',
     },
 };

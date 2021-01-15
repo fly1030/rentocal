@@ -50,7 +50,7 @@ async function getDataFromURL(url: string) {
     xmlhttp.onreadystatechange = function() {
         if (this.readyState === 4 && this.status === 200) {
             console.log('this.response: ', this.responseText);
-            parseImportResponse(url, this.responseText);
+            const propertyParams = parseImportResponse(url, this.responseText);
         }
     }
     xmlhttp.open("GET", `https://cors-anywhere.herokuapp.com/${url}`, true);
