@@ -1,5 +1,5 @@
 import { useMutation } from '@apollo/client';
-import { Input, message, Modal } from 'antd';
+import { Alert, Input, message, Modal, Spin } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { CREATE_PROERTY } from './ReportCreationModal';
 import { getApolloClient, graphQLErrorHandler, parseImportResponse } from './Utils/Utils';
@@ -13,6 +13,7 @@ type Props = {
 function ImportFromURLModal(props: Props) {
     const [importURL, setImportURL] = useState<string>('');
     const [creationParams, setCreationParams] = useState<{[key: string]: any} | null>(null);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
 
     useEffect(() => {
         if (creationParams != null) {
@@ -42,20 +43,33 @@ function ImportFromURLModal(props: Props) {
             title="Import from URL" 
             visible={isImportModalVisible} 
             onOk={() => {
-                if (importURL.length > 0) {
-                    getDataFromURL(importURL, setCreationParams);
+                if (validateURL(importURL)) {
+                    getDataFromURL(importURL, setCreationParams, setIsImportModalVisible, setIsLoading);
+                    setIsLoading(true);
                 }
-                setIsImportModalVisible(false);
             }} 
             onCancel={() => {setIsImportModalVisible(false)}}
+            okButtonProps={{disabled: !importURL.includes('www.zillow.com')}}
         >
-            <div style={{display: 'flex'}}>
-                <Input 
-                    placeholder="Input MLS URL here..."
-                    value={importURL}
-                    onChange={(event) => {setImportURL(event.target.value)}}
-                />
-            </div>
+            { 
+                isLoading ? 
+                    <div style={{display: 'flex', width: '100%', justifyContent: 'center'}}>
+                        <Spin tip="Creating report..." />
+                    </div> : 
+                    <div>
+                        <Alert 
+                            message = "Only work with Zillow URL for now" 
+                            type = "info" 
+                            showIcon = {true} 
+                        />
+                        <Input
+                            style={{marginTop: 8}}
+                            placeholder="Input MLS URL here..."
+                            value={importURL}
+                            onChange={(event) => {setImportURL(event.target.value)}}
+                        />
+                    </div>
+            }
         </Modal>
 	);
 }
@@ -63,6 +77,8 @@ function ImportFromURLModal(props: Props) {
 async function getDataFromURL(
     url: string,
     setCreationParams: (value: {[key: string]: any}) => void,
+    setIsImportModalVisible: (value: boolean) => void,
+    setIsLoading: (value: boolean) => void,
 ) {
     let xmlhttp = null;
     if (window.XMLHttpRequest)
@@ -117,6 +133,8 @@ async function getDataFromURL(
                 unit_count: 1,
             };
             setCreationParams(queryVariable);
+            setIsLoading(false);
+            setIsImportModalVisible(false);
         }
     }
     xmlhttp.open("GET", `https://cors-anywhere.herokuapp.com/${url}`, true);
@@ -124,6 +142,18 @@ async function getDataFromURL(
     // xmlhttp.setRequestHeader("Origin", 'connectmls.com');
     xmlhttp.setRequestHeader('Access-Control-Allow-Headers', '*');
     xmlhttp.send();
+}
+
+function validateURL(importURL: string): boolean {
+    if (importURL.length == 0) {
+        return false;
+    }
+
+    if (!importURL.includes('www.zillow.com')) {
+        return false;
+    }
+
+    return true;
 }
 
 export default ImportFromURLModal;
