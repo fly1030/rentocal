@@ -1,4 +1,17 @@
-import { Button, Card, Form, Input, InputNumber, Modal, Row, Col, Statistic, Image, message } from 'antd';
+import { 
+    Button, 
+    Card, 
+    Form, 
+    Input, 
+    InputNumber, 
+    Modal, 
+    Row, 
+    Col, 
+    Statistic, 
+    Image, 
+    message, 
+    Tag,
+} from 'antd';
 import React, { useState } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { 
@@ -10,6 +23,7 @@ import {
     propertyLinkState,
     descriptionState,
     imageLinkState,
+    unitCountState,
 } from 'recoilAtoms';
 import {EditOutlined, LinkOutlined} from '@ant-design/icons';
 import { gql, useMutation } from '@apollo/client';
@@ -27,6 +41,7 @@ const UPDATE_PROPERTY_INFO = gql`
         $updated_link: String!,
         $updated_image_link: String,
         $updated_description: String,
+        $updated_unit_count: Int!,
     ) {
         updatePropertyInfo(
             orig_id: $orig_id,
@@ -37,6 +52,7 @@ const UPDATE_PROPERTY_INFO = gql`
             updated_link: $updated_link,
             updated_image_link: $updated_image_link,
             updated_description: $updated_description,
+            updated_unit_count: $updated_unit_count,
         ) {
             id
         }
@@ -51,6 +67,7 @@ function PropertyInfoCard() {
     const [propertyLink, setPropertyLink] = useRecoilState(propertyLinkState);
     const [imageLink, setImageLink] = useRecoilState(imageLinkState);
     const [description, setDescription] = useRecoilState(descriptionState);
+    const [unitCount, setUnitCount] = useRecoilState(unitCountState);
     const uniqueID = useRecoilValue(uniqueIDState);
     const [isPropertyInfoModalVisible, setIsPropertyInfoModalVisible] = useState<boolean>(false);
     const [updatePropertyInfo] = useMutation(
@@ -100,6 +117,11 @@ function PropertyInfoCard() {
                             }
                         >
                             <div style={{display: 'flex'}}>
+                                <Statistic
+                                    style={{paddingRight: 36}}
+                                    title="Units" 
+                                    value={unitCount} 
+                                />
                                 <Statistic 
                                     style={{paddingRight: 36}} 
                                     title="Bedrooms" 
@@ -110,11 +132,17 @@ function PropertyInfoCard() {
                                     title="Bathrooms" 
                                     value={bathroomCount} 
                                 />
-                                <Statistic 
+                                <Statistic
+                                    style={{paddingRight: 36}}
                                     title="Year Built" 
                                     value={String(yearBuilt)} 
                                     groupSeparator=""
                                 />
+                                {
+                                    unitCount > 1 ? 
+                                        <Tag style={{marginTop: 20, height: 20}} color="blue">Multi Family</Tag> : 
+                                        null
+                                }
                             </div>
                         </Card>
                         <Card>
@@ -145,6 +173,7 @@ function PropertyInfoCard() {
                                 updated_link: propertyLink,
                                 updated_image_link: imageLink,
                                 updated_description: description,
+                                updated_unit_count: unitCount,
                             } 
                         }
                     );
@@ -155,7 +184,7 @@ function PropertyInfoCard() {
                 <Form 
                     {...layout} 
                     name="property-info-form" 
-                    onValuesChange={({address, link, beds, bath, yearBuiltValue, image_link, description}) => {
+                    onValuesChange={({address, link, beds, bath, yearBuiltValue, image_link, description, unit_count}) => {
                         if (address != null) {
                             setPropertyAddress(address);
                         }
@@ -177,6 +206,9 @@ function PropertyInfoCard() {
                         if (description != null) {
                             setDescription(description);
                         }
+                        if (unit_count != null) {
+                            setUnitCount(unit_count);
+                        }
                     }}
                 >
                     <Form.Item 
@@ -196,12 +228,20 @@ function PropertyInfoCard() {
                         <Input />
                     </Form.Item>
                     <Form.Item 
+                        name={'unit_count'} 
+                        label="Units" 
+                        required={true}
+                        initialValue={unitCount}
+                    >
+                        <InputNumber style={{width: '100%'}} />
+                    </Form.Item>
+                    <Form.Item 
                         name={'beds'} 
                         label="beds" 
                         required={true}
                         initialValue={bedroomCount}
                     >
-                        <InputNumber />
+                        <InputNumber style={{width: '100%'}} />
                     </Form.Item>
                     <Form.Item 
                         name={'bath'} 
@@ -209,7 +249,7 @@ function PropertyInfoCard() {
                         required={true}
                         initialValue={bathroomCount}
                     >
-                        <InputNumber />
+                        <InputNumber style={{width: '100%'}} />
                     </Form.Item>
                     <Form.Item 
                         name={'yearBuiltValue'} 

@@ -1,5 +1,5 @@
 import { gql, useMutation } from '@apollo/client';
-import { Descriptions, Form, Input, InputNumber, message, Modal, Steps } from 'antd';
+import { Form, Input, InputNumber, message, Modal, Steps } from 'antd';
 import TextArea from 'antd/lib/input/TextArea';
 const { Step } = Steps;
 import React, { ReactNode, useState } from 'react';
@@ -44,6 +44,7 @@ const CREATE_PROERTY = gql`
         $link: String!,
         $image_link: String,
         $description: String,
+        $unit_count: Int!,
     ) {
         createProperty(
             bathroom_count: $bathroom_count,
@@ -68,6 +69,7 @@ const CREATE_PROERTY = gql`
             link: $link,
             image_link: $image_link,
             description: $description,
+            unit_count: $unit_count,
         ) {
             unique_id
         }
@@ -96,6 +98,7 @@ function ReportCreationModal(props: Props) {
     const [propertyLink, setPropertyLink] = useState<string>('');
     const [imageLink, setImageLink] = useState<string>('');
     const [description, setDescription] = useState<string>('');
+    const [unitCount, setUnitCount] = useState<number>(1);
     const {
         isCreationModalVisible, 
         setIsCreationModalVisible, 
@@ -145,6 +148,7 @@ function ReportCreationModal(props: Props) {
                     link: propertyLink,
                     image_link: imageLink,
                     description: description,
+                    unit_count: unitCount,
                 };
                 createProperty({ variables: queryVariable});
                 setIsCreationModalVisible(false);
@@ -169,6 +173,7 @@ function ReportCreationModal(props: Props) {
                 setPropertyLink('');
                 setImageLink('');
                 setDescription('');
+                setUnitCount(1);
             }} 
             onCancel={() => {setIsCreationModalVisible(false)}}
             okButtonProps={{disabled: currentStep < 3}}
@@ -208,6 +213,7 @@ function ReportCreationModal(props: Props) {
                             setPropertyLink: setPropertyLink,
                             setImageLink: setImageLink,
                             setDescription: setDescription,
+                            setUnitCount: setUnitCount,
                             propertyAddress: propertyAddress,
                             bedroomCount: bedroomCount,
                             bathroomCount: bathroomCount,
@@ -228,6 +234,7 @@ function ReportCreationModal(props: Props) {
                             propertyLink: propertyLink,
                             imageLink: imageLink,
                             description: description,
+                            unitCount: unitCount,
                     })
                 }
                 <StepButtonGroup
@@ -263,6 +270,7 @@ function ReportCreationForm(
         setPropertyLink: (value: string) => void,
         setImageLink: (value: string) => void,
         setDescription: (value: string) => void,
+        setUnitCount: (value: number) => void,
         propertyAddress: string,
         bedroomCount: number,
         bathroomCount: number,
@@ -283,6 +291,7 @@ function ReportCreationForm(
         propertyLink: string,
         imageLink: string,
         description: string,
+        unitCount: number,
     }
 ): ReactNode {
     const layout = {
@@ -311,6 +320,7 @@ function ReportCreationForm(
         setPropertyLink,
         setImageLink,
         setDescription,
+        setUnitCount,
         downPercentage,
         interestRate,
         closingCost,
@@ -331,6 +341,7 @@ function ReportCreationForm(
         propertyLink,
         imageLink,
         description,
+        unitCount,
     } = props;
     switch (currentStep) {
         case 0:
@@ -338,7 +349,7 @@ function ReportCreationForm(
                 <Form 
                     {...layout} 
                     name="property-form" 
-                    onValuesChange={({address, link, beds, bath, yearBuiltValue, image_link, description}) => {
+                    onValuesChange={({address, link, beds, bath, yearBuiltValue, image_link, description, unit_count}) => {
                         if (address != null) {
                             setPropertyAddress(address.trim());
                         }
@@ -359,6 +370,9 @@ function ReportCreationForm(
                         }
                         if (description != null) {
                             setDescription(description.trim());
+                        }
+                        if (unit_count != null) {
+                            setUnitCount(unit_count);
                         }
                     }}
                 >
@@ -385,6 +399,14 @@ function ReportCreationForm(
                         initialValue={propertyLink}
                     >
                         <Input />
+                    </Form.Item>
+                    <Form.Item 
+                        name={'unit_count'} 
+                        label="Units" 
+                        required={true}
+                        initialValue={unitCount}
+                    >
+                        <InputNumber style={{width: '100%'}} />
                     </Form.Item>
                     <Form.Item 
                         name={'beds'} 

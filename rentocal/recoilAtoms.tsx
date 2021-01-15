@@ -104,3 +104,8 @@ export const descriptionState = atom({
     key: 'descriptionState',
     default: '',
 });
+
+export const unitCountState = atom({
+    key: 'unitCountState',
+    default: 1,
+});

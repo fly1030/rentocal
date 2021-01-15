@@ -31,6 +31,7 @@ import {
   propertyLinkState,
   imageLinkState,
   descriptionState,
+  unitCountState,
 } from "recoilAtoms";
 import ImportFromURLModal from './ImportFromURLModal';
 import { propertiesByCreationTime, sortByCreationTime } from './Utils/Utils';
@@ -63,6 +64,7 @@ const App = (props: Props) => {
   const setPropertyLink = useSetRecoilState(propertyLinkState);
   const setImageLink = useSetRecoilState(imageLinkState);
   const setDescription = useSetRecoilState(descriptionState);
+  const setUnitCount = useSetRecoilState(unitCountState);
 
   const {propertyEntries, setNewEntries} = props;
   const {
@@ -112,6 +114,7 @@ const App = (props: Props) => {
       link,
       image_link,
       description,
+      unit_count,
     } = targetProperty;
     setPurchasePrice(price);
     setDownPercentage(down_percentage);
@@ -134,6 +137,7 @@ const App = (props: Props) => {
     setPropertyLink(link);
     setImageLink(image_link);
     setDescription(description);
+    setUnitCount(unit_count);
   }, [selectedProperty]);
 
   const sortedPropertyEntries = propertyEntries.slice().sort(sortByCreationTime);

@@ -32,6 +32,7 @@ query {
     link
     image_link
     description
+    unit_count
   }
 }
 `;
