@@ -253,24 +253,26 @@ function getParamsFromZillowURL(
     }
 
     let monthlyTax = 0;
-    let montylyInsurance = 0;
-    let hoeFee = 0;
+    let monthlyInsurance = 0;
+    let hoaFee = 0;
     investmentInfoArray.forEach(entry => {
         const [attributeName, atrributeValue] = entry.split("  ");
         switch(attributeName) {
             case 'Home insurance':
-                montylyInsurance = Number(atrributeValue.replace('/mo', '').replace('$', ''));
+                monthlyInsurance = Number(atrributeValue.replace('/mo', '').replace('$', ''));
                 return;
             case 'Property taxes':
                 monthlyTax = Number(atrributeValue.replace('/mo', '').replace('$', ''));
                 return;
             case 'HOA fees':
-                hoeFee = Number(atrributeValue.replace('/mo', '').replace('$', ''));
+                hoaFee = Number(atrributeValue.replace('/mo', '').replace('$', ''));
                 return;
             default:
                 return;
         }
     });
+
+    document.body.removeChild(newDiv);
     
     const propertyParams = {
         address,
@@ -282,8 +284,8 @@ function getParamsFromZillowURL(
         purchasePrice,
         rent,
         monthlyTax,
-        montylyInsurance,
-        hoeFee,
+        monthlyInsurance,
+        hoaFee,
     };
 
     return propertyParams;

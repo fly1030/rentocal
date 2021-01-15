@@ -241,6 +241,7 @@ const App = (props: Props) => {
         <ImportFromURLModal
           isImportModalVisible = {isImportModalVisible}
           setIsImportModalVisible = {setIsImportModalVisible}
+          setNewEntries={setNewEntries}
         />
     </Layout>
   );

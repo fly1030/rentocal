@@ -20,7 +20,7 @@ const INFO_STEPS = [
     "Finish",
 ];
 
-const CREATE_PROERTY = gql`
+export const CREATE_PROERTY = gql`
     mutation CreateProperty(
         $bathroom_count: Int!,
         $bedroom_count: Int!,
