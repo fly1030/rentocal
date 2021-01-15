@@ -40,7 +40,7 @@ const CREATE_PROERTY = gql`
         $unique_id: String!,
         $vacancy_rate: Float!,
         $year_built: Int!,
-        $creation_time: String!,
+        $creation_time: Int!,
         $link: String!,
         $image_link: String,
         $description: String,
