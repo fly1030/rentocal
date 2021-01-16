@@ -123,7 +123,7 @@ function PropertySection() {
     );
     
 	return (
-		<div style={{padding: 20}}>
+		<div id='propertySection' style={{padding: 20}}>
             <Row>
                 <Col span={24}>
                     <PropertyInfoCard />

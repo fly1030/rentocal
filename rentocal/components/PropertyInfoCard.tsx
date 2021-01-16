@@ -11,6 +11,7 @@ import {
     Image, 
     message, 
     Tag,
+    Tooltip,
 } from 'antd';
 import React, { useState } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
@@ -101,7 +102,7 @@ function PropertyInfoCard() {
                                     <Button
                                         style = {{marginRight: 8}} 
                                         type="primary" 
-                                        icon={<LinkOutlined />}
+                                        icon={<Tooltip title="Go to original link"><LinkOutlined /></Tooltip>}
                                         onClick={() => {
                                             window.open(propertyLink);
                                         }}
@@ -146,9 +147,14 @@ function PropertyInfoCard() {
                             </div>
                         </Card>
                         <Card>
-                            <div style={{height: 223}}>
-                                {descriptionToDesplay}
-                            </div>
+                            <Tooltip title={descriptionToDesplay} placement="right">
+                                <div style={{
+                                    height: 223, 
+                                    overflow: 'hidden', 
+                                }}>
+                                    {descriptionToDesplay}
+                                </div>
+                            </Tooltip>
                         </Card>
                     </div>
                 </Col>

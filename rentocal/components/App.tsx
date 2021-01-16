@@ -79,6 +79,7 @@ const App = (props: Props) => {
   const [isCreationModalVisible, setIsCreationModalVisible] = useState<boolean>(false);
   const [isDeletionModalVisible, setIsDeletionModalVisible] = useState<boolean>(false);
   const [isImportModalVisible, setIsImportModalVisible] = useState<boolean>(false);
+  const [siderHeight, setSiderHeight] = useState<string>('100%');
 
   useEffect(() => {
     if (selectedProperty == null) {
@@ -140,19 +141,29 @@ const App = (props: Props) => {
     setUnitCount(unit_count);
   }, [selectedProperty]);
 
+  useEffect(() => {
+    const propertySection = document.getElementById('propertySection');
+    if (propertySection != null) {
+      setSiderHeight(`${propertySection.offsetHeight}px`);
+    }
+  }, []);
+
   const sortedPropertyEntries = propertyEntries.slice().sort(sortByCreationTime);
   const propertyEntiresByCreaitonTime = propertiesByCreationTime(sortedPropertyEntries);
 
   return (
-    <Layout style={{height: 1600}}>
+    <Layout style={{height: '100%'}}>
         <HomepageHeader />
         <Layout>
-            <Sider width={300} className="site-layout-background">
+            <Sider 
+              width={300} 
+              className="site-layout-background"
+            >
                 <Menu
                     mode="inline"
                     defaultSelectedKeys={['1']}
                     defaultOpenKeys={['sub1']}
-                    style={{ height: '100%', borderRight: 0 }}
+                    style={{ height: siderHeight, overflowY: 'scroll', borderRight: 0 }}
                     onSelect={
                       (menu) => {
                         setSelectedProperty(String(menu.key));
