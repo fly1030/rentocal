@@ -192,6 +192,8 @@ export function parseImportResponse(
     switch(domainName) {
         case ImportDomains.ZILLOW:
             return getParamsFromZillowURL(responseText);
+        case ImportDomains.TRULIA:
+            return getParamsFromTruliaURL(responseText);
         case ImportDomains.MLSMATRIX:
             getParamsFromMLSURL(responseText);
             return {};
@@ -273,6 +275,7 @@ function getParamsFromZillowURL(
     });
 
     document.body.removeChild(newDiv);
+    const yearBuilt = 2021;
     
     const propertyParams = {
         address,
@@ -286,6 +289,87 @@ function getParamsFromZillowURL(
         monthlyTax,
         monthlyInsurance,
         hoaFee,
+        yearBuilt,
+    };
+
+    return propertyParams;
+}
+
+function getParamsFromTruliaURL(
+    responseText: string,
+): {[key: string]: any} {
+    const newDiv = document.createElement("div");
+    newDiv.setAttribute("id", "ImportTruliaDiv");
+    newDiv.innerHTML = responseText;
+    newDiv.style.display = 'none';
+    document.body.appendChild(newDiv);
+    const address = document.querySelector("meta[property='twitter:image:alt']")?.getAttribute('content');
+    const link = document.querySelector("meta[property='og:url']")?.getAttribute('content');
+    const description = document.querySelector("meta[property='og:description']")?.getAttribute('content');
+    const imageLink = document.querySelector("meta[property='og:image']")?.getAttribute('content');
+
+    let purchasePrice = 0;
+    const priceInfo = document.getElementsByClassName('Text__TextBase-sc-1i9uasc-0-div Text__TextContainerBase-sc-1i9uasc-1 qAaUO');
+    if (priceInfo != null && priceInfo.length > 0) {
+        for (let entry of priceInfo) {
+            const entryText = entry.innerHTML;
+            const [priceText, _] = entryText.split('<', 2);
+            purchasePrice = Number(priceText.trim().replace("$", "").replace(",", ""));
+        }
+    }
+
+    let monthlyTax = 0;
+    let hoaFee = 0;
+    let bedroomCount = 0;
+    let bathroomCount = 0;
+    let yearBuilt = 2021;
+
+    const investmenInfo = document.getElementsByClassName('FeatureList__FeatureListItem-iipbki-0 fkjmCo');
+    if (investmenInfo != null && investmenInfo.length > 0) {
+        for (let entry of investmenInfo) {
+            const entryText = entry.innerHTML;
+            const [key, value] = entryText.split(':');
+            switch(key) {
+                case "Number of Bedrooms":
+                    bedroomCount = Number(value.trim());
+                    continue;
+                case "Number of Bathrooms":
+                    bathroomCount = Number(value.trim());
+                    continue;
+                case "Year Built":
+                    yearBuilt = Number(value.trim());
+                    continue;
+                case "HOA Fee":
+                    const monthlyHoa = value.trim().replace('/Monthly', '').replace('$', '');
+                    hoaFee = Number(monthlyHoa);
+                    continue;
+                case "Annual Tax Amount":
+                    monthlyTax = Math.floor(Number(value.trim()) / 12);
+                    continue;
+                default:
+                    continue;
+            }
+        }
+    }
+
+    const rent = 0;
+    const monthlyInsurance = 0;
+
+    document.body.removeChild(newDiv);
+    
+    const propertyParams = {
+        address,
+        bedroomCount,
+        bathroomCount,
+        description,
+        link,
+        imageLink,
+        purchasePrice,
+        rent,
+        monthlyTax,
+        monthlyInsurance,
+        hoaFee,
+        yearBuilt,
     };
 
     return propertyParams;

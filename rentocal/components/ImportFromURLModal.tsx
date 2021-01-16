@@ -49,7 +49,7 @@ function ImportFromURLModal(props: Props) {
                 }
             }} 
             onCancel={() => {setIsImportModalVisible(false)}}
-            okButtonProps={{disabled: !importURL.includes('www.zillow.com')}}
+            okButtonProps={{disabled: !validateURL(importURL)}}
         >
             { 
                 isLoading ? 
@@ -58,7 +58,7 @@ function ImportFromURLModal(props: Props) {
                     </div> : 
                     <div>
                         <Alert 
-                            message = "Only work with Zillow URL for now" 
+                            message = "Only work with Zillow or Trulia URL for now" 
                             type = "info" 
                             showIcon = {true} 
                         />
@@ -104,6 +104,7 @@ async function getDataFromURL(
                 monthlyTax,
                 monthlyInsurance,
                 hoaFee,
+                yearBuilt,
             } = propertyParams;
             const propertyID = address.replace(/\//g, ' ').replace(/,/g, ' ').replace(/\s+/g, '-');
             const creationTime = Math.floor((new Date().getTime()) / 1000);
@@ -125,7 +126,7 @@ async function getDataFromURL(
                 reserve_rate: 5,
                 unique_id: propertyID,
                 vacancy_rate: 5,
-                year_built: 2021,
+                year_built: yearBuilt,
                 creation_time: Number(creationTime),
                 link: link,
                 image_link: imageLink,
@@ -149,7 +150,10 @@ function validateURL(importURL: string): boolean {
         return false;
     }
 
-    if (!importURL.includes('www.zillow.com')) {
+    if (
+        !importURL.includes('www.zillow.com') && 
+        !importURL.includes('trulia.com')
+    ) {
         return false;
     }
 
