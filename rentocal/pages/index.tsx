@@ -7,7 +7,7 @@ import { RecoilRoot } from "recoil";
 import * as Sentry from "@sentry/react";
 import { Integrations } from "@sentry/tracing";
 
-const GET_PROPERTIES = gql`
+export const GET_PROPERTIES = gql`
 query {
   properties {
     id

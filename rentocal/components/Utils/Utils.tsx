@@ -423,3 +423,21 @@ export const graphQLErrorHandler = ({networkError, graphQLErrors}: ApolloError) 
         return;
     }
 }
+
+export function getPropertiesByDate(
+    properties: Array<{[key: string]: any}>,
+    targetDate: Date,
+): Array<{[key: string]: any}> {
+    const targetMonth = monthList[targetDate.getMonth()];
+    const targetDay = targetDate.getDate();
+    const targetYear = targetDate.getFullYear();
+    const filteredProperties = properties.filter(property => {
+        const creationTime = property.creation_time;
+        const date = new Date(creationTime * 1000);
+        const entryMonth = monthList[date.getMonth()];
+        const entryDay = date.getDate()
+        const entryYear = date.getFullYear()
+        return targetMonth == entryMonth && targetDay == entryDay && targetYear == entryYear;
+    });
+    return filteredProperties;
+}
