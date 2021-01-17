@@ -6,6 +6,7 @@ import React, { useEffect, useState } from "react";
 import { RecoilRoot } from "recoil";
 import * as Sentry from "@sentry/react";
 import { Integrations } from "@sentry/tracing";
+import 'pages/api/cron';
 
 export const GET_PROPERTIES = gql`
 query {

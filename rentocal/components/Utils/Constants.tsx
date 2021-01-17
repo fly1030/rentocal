@@ -14,4 +14,4 @@ export const PropertyImagePlaceholder = 'placeholder_home.png';
 
 export const PropertyDescriptionPlaceholderText = 'Click edit button above to add description!';
 
-export const DailyDigestEmailList = ['lifang1030@gmail.com'];
+export const DailyDigestEmailList = ['wahyudinata@gmail.com', 'lifang1030@gmail.com'];

@@ -72,7 +72,10 @@ const DailyDigest = (props: Props) => {
         });
       });
 
-      console.log('propertiesForEmail: ', propertiesForEmail);
+      if (propertiesForEmail.length == 0) {
+        return;
+      }
+
       await fetch("api/send-daily-digest-email", {
         method: "POST",
         mode: "same-origin",
