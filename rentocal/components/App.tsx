@@ -35,6 +35,7 @@ import {
 } from "recoilAtoms";
 import ImportFromURLModal from './ImportFromURLModal';
 import { propertiesByCreationTime, sortByCreationTime } from './Utils/Utils';
+import { ZillowApiUrl } from './Utils/Constants';
 const {ItemGroup} = Menu;
 
 type Props = {
@@ -147,6 +148,37 @@ const App = (props: Props) => {
       setSiderHeight(`${propertySection.offsetHeight}px`);
     }
   }, []);
+
+  // useEffect(() => {
+  //   let xmlhttp = null;
+  //   if (window.XMLHttpRequest)
+  //   {
+  //       xmlhttp = new XMLHttpRequest();
+  //   }
+  //   if (xmlhttp == null) {
+  //       return;
+  //   }
+  //   xmlhttp.onreadystatechange = function() {
+  //     if (this.readyState === 4 && this.status === 200) {
+  //         console.log('this.response #2: ', this.responseText);
+  //     }
+  //   }
+
+  //   const data = new FormData();
+  //   data.append('zws-id', 'X1-ZWz16uaxpc6vij_40oka');
+  //   data.append('address', '1006 Red Bluff Rd Atlanta TX');
+  //   data.append('citystatezip', '75551');
+  //   data.append('rentzestimate', 'true');
+
+  //   const queryParamsString = "?zws-id=X1-ZWz16uaxpc6vij_40oka&"
+  //   const requestURL = ZillowApiUrl + queryParamsString;
+  //   // https://www.zillow.com/webservice/GetDeepSearchResults.htm?zws-id=X1-ZWz16uaxpc6vij_40oka&address=1006%20Red%20Bluff%20Rd%20Atlanta%20TX&citystatezip=75551&rentzestimate=true
+
+  //   xmlhttp.open("GET", `https://cors-anywhere.herokuapp.com/${ZillowApiUrl}`, true);
+  //   xmlhttp.setRequestHeader("Accept", 'application/json');
+  //   xmlhttp.setRequestHeader('Access-Control-Allow-Headers', '*');
+  //   xmlhttp.send(data);
+  // }, []);
 
   const sortedPropertyEntries = propertyEntries.slice().sort(sortByCreationTime);
   const propertyEntiresByCreaitonTime = propertiesByCreationTime(sortedPropertyEntries);
