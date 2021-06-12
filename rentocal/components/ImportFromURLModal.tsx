@@ -138,7 +138,7 @@ async function getDataFromURL(
             setIsImportModalVisible(false);
         }
     }
-    xmlhttp.open("GET", `https://corsanywhere.herokuapp.com/${url}`, true);
+    xmlhttp.open("GET", `https://protected-tor-91171.herokuapp.com/${url}`, true);
     xmlhttp.setRequestHeader("Accept", 'application/json');
     // xmlhttp.setRequestHeader("Origin", 'connectmls.com');
     xmlhttp.setRequestHeader('Access-Control-Allow-Headers', '*');
